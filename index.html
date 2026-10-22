@@ -1,0 +1,618 @@
+﻿<!DOCTYPE html>
+<html lang="zh-Hant">
+<head>
+<meta charset="UTF-8">
+<meta name="viewport" content="width=device-width, initial-scale=1.0">
+<title>從 ISO 14064 到 ISO 14083｜一趟看得懂的運輸鏈碳排展</title>
+<meta name="description" content="一個給零基礎讀者的互動式科普網站：從企業熟悉的 ISO 14064-1 溫室氣體盤查，一步步理解 ISO 14083 如何量化貨運與客運運輸鏈的排放。">
+<link rel="stylesheet" href="./assets/styles.css">
+</head>
+<body>
+<a class="skip" href="#main">跳到主要內容</a>
+
+<div class="topbar" role="banner">
+  <div class="topbar-inner">
+    <span class="mark">碳排運輸鏈<span>展</span></span>
+    <nav class="topnav" aria-label="快速導覽">
+      <a href="#route">參觀路線</a>
+      <a href="#glossary">術語</a>
+      <a href="#case">案例</a>
+      <a href="#refs">參考資料</a>
+    </nav>
+  </div>
+  <div class="progress" aria-hidden="true"><span id="progressBar"></span></div>
+</div>
+
+<div class="shell">
+  <aside class="rail" aria-label="展區導覽">
+    <ol class="rail-list">
+      <li><a href="#route"><i>00</i>參觀路線</a></li>
+      <li><a href="#s1"><i>01</i>ISO 14064 系列</a></li>
+      <li><a href="#s2"><i>02</i>組織層級盤查</a></li>
+      <li><a href="#s3"><i>03</i>為什麼是運輸</a></li>
+      <li><a href="#s4"><i>04</i>14083 運輸鏈</a></li>
+      <li><a href="#glossary"><i>05</i>術語翻譯區</a></li>
+      <li><a href="#case"><i>06</i>貨運案例</a></li>
+      <li><a href="#s7"><i>07</i>帶走的收穫</a></li>
+      <li><a href="#refs"><i>08</i>參考資料</a></li>
+    </ol>
+    <p class="rail-note">本展為教學說明，<br>不提供正式盤查或認證建議。</p>
+  </aside>
+
+  <main id="main">
+
+    <!-- ============ 00 入口 ============ -->
+    <section id="route" class="entry" aria-labelledby="entryTitle">
+      <p class="kicker">智慧環境 × 碳管理入門</p>
+      <h1 id="entryTitle">先看懂企業怎麼算自己的碳，<br>再看懂一批貨怎麼算它的碳。</h1>
+      <p class="lede">
+        你可能聽過「碳盤查」、「ESG」、或 <button class="term" data-term="iso14064">ISO 14064</button>。
+        但一批貨從工廠運到客戶手上，路上排的溫室氣體要怎麼算、由誰算、算給誰？
+        這正是 <strong>ISO 14083</strong> 在處理的事。這個網站帶你從已經聽過的 ISO 14064 出發，
+        沿著一趟貨物旅程，走到 ISO 14083。
+      </p>
+
+      <figure class="hero-fig" aria-labelledby="heroCap">
+        <svg class="hero-wide" viewBox="0 0 960 300" role="img" aria-labelledby="heroCap">
+          <defs>
+            <g id="ico-truck"><path d="M0 14h22V3H0zM22 14h11l4-6h-6V6h-9z" fill="#fff" stroke="currentColor" stroke-width="1.8" stroke-linejoin="round"/><circle cx="7" cy="17" r="3" fill="#fff" stroke="currentColor" stroke-width="1.8"/><circle cx="29" cy="17" r="3" fill="#fff" stroke="currentColor" stroke-width="1.8"/></g>
+            <g id="ico-train"><rect x="0" y="2" width="44" height="14" rx="2" fill="#fff" stroke="currentColor" stroke-width="1.8"/><path d="M0 9h44M15 2v14M30 2v14" stroke="currentColor" stroke-width="1.4"/><circle cx="8" cy="18" r="2.4" fill="currentColor"/><circle cx="36" cy="18" r="2.4" fill="currentColor"/></g>
+            <g id="ico-hub"><path d="M0-22l19 11v22L0 22-19 11v-22z" fill="#fff" stroke="currentColor" stroke-width="2"/><path d="M-9 0h18M0-9v18" stroke="currentColor" stroke-width="2"/></g>
+          </defs>
+          <!-- 14083 bracket -->
+          <path class="hf-bracket" d="M170 66v-14h712v14"/>
+          <text class="hf-std" x="526" y="36" text-anchor="middle">ISO 14083｜把這一趟運輸拆開來算</text>
+          <!-- org boundary -->
+          <circle class="hf-org" cx="170" cy="170" r="115"/>
+          <text class="hf-std hf-std-org" x="170" y="238" text-anchor="middle">ISO 14064-1</text>
+          <text class="hf-sub" x="170" y="258" text-anchor="middle">圈出一家公司</text>
+          <!-- factory -->
+          <g class="hf-ink" transform="translate(132 132)">
+            <path d="M0 52V22l18 10V22l18 10V0h14v52z" fill="#fff" stroke="currentColor" stroke-width="2" stroke-linejoin="round"/>
+            <path d="M8 40h8M24 40h8" stroke="currentColor" stroke-width="2"/>
+          </g>
+          <text class="hf-node" x="158" y="204" text-anchor="middle">工廠</text>
+          <!-- chain lines -->
+          <line class="hf-road" x1="186" y1="175" x2="379" y2="175"/>
+          <line class="hf-rail" x1="421" y1="175" x2="669" y2="175"/>
+          <line class="hf-road" x1="711" y1="175" x2="852" y2="175"/>
+          <!-- vehicles -->
+          <use href="#ico-truck" class="hf-c-road" x="282" y="146"/>
+          <use href="#ico-train" class="hf-c-rail" x="523" y="146"/>
+          <use href="#ico-truck" class="hf-c-road" x="764" y="146"/>
+          <!-- hubs -->
+          <use href="#ico-hub" class="hf-c-hub" x="400" y="175"/>
+          <use href="#ico-hub" class="hf-c-hub" x="690" y="175"/>
+          <!-- customer -->
+          <g class="hf-ink" transform="translate(856 154)">
+            <path d="M0 18L20 2l20 16v24H0z" fill="#fff" stroke="currentColor" stroke-width="2" stroke-linejoin="round"/>
+            <rect x="15" y="26" width="10" height="16" fill="none" stroke="currentColor" stroke-width="2"/>
+          </g>
+          <!-- labels -->
+          <text class="hf-mode" x="300" y="214" text-anchor="middle">公路</text>
+          <text class="hf-node" x="400" y="224" text-anchor="middle">轉運</text>
+          <text class="hf-mode" x="545" y="214" text-anchor="middle">鐵路</text>
+          <text class="hf-node" x="690" y="224" text-anchor="middle">轉運</text>
+          <text class="hf-mode" x="782" y="214" text-anchor="middle">公路</text>
+          <text class="hf-node" x="876" y="224" text-anchor="middle">客戶</text>
+          <text class="hf-note" x="300" y="266">貨一出廠，就走出了公司的圈 →</text>
+        </svg>
+        <svg class="hero-tall" viewBox="0 0 360 620" role="img" aria-labelledby="heroCap">
+          <text class="hf-std hf-std-org" x="180" y="24" text-anchor="middle">ISO 14064-1</text>
+          <text class="hf-sub" x="180" y="46" text-anchor="middle">先把一家公司圈起來算</text>
+          <circle class="hf-org" cx="180" cy="150" r="88"/>
+          <g class="hf-ink" transform="translate(155 110)">
+            <path d="M0 52V22l18 10V22l18 10V0h14v52z" fill="#fff" stroke="currentColor" stroke-width="2" stroke-linejoin="round"/>
+            <path d="M8 40h8M24 40h8" stroke="currentColor" stroke-width="2"/>
+          </g>
+          <text class="hf-node" x="180" y="188" text-anchor="middle">工廠</text>
+          <line class="hf-road" x1="180" y1="200" x2="180" y2="300"/>
+          <line class="hf-rail" x1="180" y1="344" x2="180" y2="430"/>
+          <line class="hf-road" x1="180" y1="474" x2="180" y2="530"/>
+          <use href="#ico-truck" class="hf-c-road" x="102" y="258"/>
+          <use href="#ico-train" class="hf-c-rail" x="96" y="378"/>
+          <use href="#ico-truck" class="hf-c-road" x="102" y="492"/>
+          <use href="#ico-hub" class="hf-c-hub" x="180" y="322"/>
+          <use href="#ico-hub" class="hf-c-hub" x="180" y="452"/>
+          <g class="hf-ink" transform="translate(160 532)">
+            <path d="M0 18L20 2l20 16v24H0z" fill="#fff" stroke="currentColor" stroke-width="2" stroke-linejoin="round"/>
+            <rect x="15" y="26" width="10" height="16" fill="none" stroke="currentColor" stroke-width="2"/>
+          </g>
+          <text class="hf-mode" x="196" y="272">公路</text>
+          <text class="hf-node" x="210" y="328">轉運</text>
+          <text class="hf-mode" x="196" y="392">鐵路</text>
+          <text class="hf-node" x="210" y="458">轉運</text>
+          <text class="hf-mode" x="196" y="506">公路</text>
+          <text class="hf-node" x="208" y="560">客戶</text>
+          <path class="hf-bracket" d="M300 214h14v368h-14"/>
+          <text class="hf-std" x="180" y="610" text-anchor="middle">ISO 14083｜把這一趟運輸拆開來算</text>
+        </svg>
+        <figcaption id="heroCap">示意圖：ISO 14064-1 的邊界是「一家公司」；貨物出廠後經過公路、轉運、鐵路、轉運、公路才到客戶，這一整趟是 ISO 14083 要拆開計算的運輸鏈。</figcaption>
+      </figure>
+
+      <div class="route" aria-labelledby="routeTitle">
+        <h2 id="routeTitle">參觀路線</h2>
+        <p class="route-hint">八個展區，建議依序走。也可以點任何一站直接跳過去。</p>
+        <ol class="stops">
+          <li><a href="#s1"><b>01</b><span>ISO 14064 是什麼</span><em>溫室氣體管理的標準家族</em></a></li>
+          <li><a href="#s2"><b>02</b><span>14064-1 在做什麼</span><em>組織層級的排放盤查</em></a></li>
+          <li><a href="#s3"><b>03</b><span>運輸排放在哪裡</span><em>從企業盤查走向運輸鏈</em></a></li>
+          <li><a href="#s4"><b>04</b><span>14083 的運輸鏈</span><em>路段、節點與排放</em></a></li>
+          <li><a href="#glossary"><b>05</b><span>術語翻譯區</span><em>把專業名詞講成人話</em></a></li>
+          <li><a href="#case"><b>06</b><span>一批貨的案例</span><em>看資料怎麼變成數字</em></a></li>
+          <li><a href="#s7"><b>07</b><span>帶走的收穫</span><em>兩張標準的分工</em></a></li>
+          <li><a href="#refs"><b>08</b><span>參考資料</span><em>每個數字都能回溯</em></a></li>
+        </ol>
+      </div>
+    </section>
+
+    <!-- ============ 01 ISO 14064 系列 ============ -->
+    <section id="s1" class="exhibit" aria-labelledby="s1Title">
+      <header class="label">
+        <p class="no">展區 01</p>
+        <h2 id="s1Title">ISO 14064 不是一本，而是一個家族</h2>
+        <p class="why">問題：一家公司要說自己「排了多少碳」，憑什麼？總得有一套大家都照著的規矩。</p>
+      </header>
+      <div class="body">
+        <p>
+          ISO 是國際標準組織，它寫的「標準」就是大家約定的做法。<strong>ISO 14064 是一個由三份標準組成的系列</strong>，
+          負責把溫室氣體（<button class="term" data-term="ghg">GHG</button>）的排放<strong>算出來、寫成報告、再請別人檢查</strong>這三件事。
+          三份各有分工，不是同一份的三個版本：
+        </p>
+        <ul class="plates">
+          <li class="plate">
+            <p class="plate-tag">算自己</p>
+            <h3>ISO 14064-1</h3>
+            <p><strong>組織層級</strong>的溫室氣體排放與移除，怎麼量化與報告。設計盤查、管理、回報，都在這份的要求裡。</p>
+            <p class="plate-eg">例：一家食品公司要報告「2025 整年，我們公司總共排了多少」。</p>
+          </li>
+          <li class="plate">
+            <p class="plate-tag">算一個專案</p>
+            <h3>ISO 14064-2</h3>
+            <p><strong>專案層級</strong>：針對某個想讓排放變少、或讓碳吸收變多的活動，怎麼量化、監測與報告。</p>
+            <p class="plate-eg">例：把廠區鍋爐換成天然氣，到底真的少排了多少？</p>
+          </li>
+          <li class="plate">
+            <p class="plate-tag">檢查別人說的</p>
+            <h3>ISO 14064-3</h3>
+            <p>給<strong>查證與確證</strong>（verification / validation）的人用：怎麼查一家公司或一個專案提出的溫室氣體聲明可不可信。</p>
+            <p class="plate-eg">例：第三方單位來查那家食品公司的年度報告。</p>
+          </li>
+        </ul>
+        <div class="note">
+          <p><strong>一句話：</strong>14064-1 算「公司」，14064-2 算「減碳專案」，14064-3 負責「查核」。本展主要用 14064-1。</p>
+        </div>
+      </div>
+    </section>
+
+    <!-- ============ 02 組織層級盤查 ============ -->
+    <section id="s2" class="exhibit" aria-labelledby="s2Title">
+      <header class="label">
+        <p class="no">展區 02</p>
+        <h2 id="s2Title">14064-1：把「一家公司」圈起來算</h2>
+        <p class="why">問題：公司買電、買貨、外包運輸，這些也算公司的排放嗎？</p>
+      </header>
+      <div class="body">
+        <p>
+          14064-1 的關鍵是「<button class="term" data-term="org-level">組織層級</button>」四個字：先畫一個圈，圈裡是這家公司，
+          然後把圈外圈內跟它有關的排放都歸到它頭上。做法大致是四步：
+        </p>
+        <ol class="steps" id="invSteps">
+          <li>
+            <button class="step-btn" aria-expanded="false" aria-controls="step-1">
+              <b>步驟 1</b><span>畫圈：界定組織與盤查範圍</span>
+            </button>
+            <div id="step-1" class="step-panel">
+              <p>先說清楚圈裡包含哪些工廠、分公司、據點。圈沒畫清楚，之後的數字就沒有可比性。</p>
+            </div>
+          </li>
+          <li>
+            <button class="step-btn" aria-expanded="false" aria-controls="step-2">
+              <b>步驟 2</b><span>找來源：哪些活動會排溫室氣體</span>
+            </button>
+            <div id="step-2" class="step-panel">
+              <p>鍋爐燒天然氣、公司車燒柴油、買來的電力、員工出差、進來的貨物與運出去的貨物，都是來源。</p>
+            </div>
+          </li>
+          <li>
+            <button class="step-btn" aria-expanded="false" aria-controls="step-3">
+              <b>步驟 3</b><span>量化：把活動資料換成排放</span>
+            </button>
+            <div id="step-3" class="step-panel">
+              <p>用「<button class="term" data-term="ef">排放因子</button>」把用了多少燃料、多少度電，換成 <button class="term" data-term="co2e">CO₂e</button>（二氧化碳當量），才能加總比較。</p>
+            </div>
+          </li>
+          <li>
+            <button class="step-btn" aria-expanded="false" aria-controls="step-4">
+              <b>步驟 4</b><span>報告：把方法與數字一起寫出來</span>
+            </button>
+            <div id="step-4" class="step-panel">
+              <p>不只給一個總數，還要寫範圍、資料來源、假設與不確定性，讓別人能檢視。</p>
+            </div>
+          </li>
+        </ol>
+
+        <h3 class="sub">企業排放地圖：三個圈層</h3>
+        <div class="map-wrap">
+          <svg class="rings" viewBox="0 0 380 380" aria-hidden="true">
+            <circle cx="190" cy="190" r="182" class="rg-3"/>
+            <circle cx="190" cy="190" r="122" class="rg-2"/>
+            <circle cx="190" cy="190" r="62" class="rg-1"/>
+            <text class="rg-name" x="190" y="186" text-anchor="middle">直接排放</text>
+            <text class="rg-scope" x="190" y="206" text-anchor="middle">Scope 1</text>
+            <text class="rg-name" x="190" y="100" text-anchor="middle">外購能源</text>
+            <text class="rg-scope" x="190" y="118" text-anchor="middle">Scope 2</text>
+            <text class="rg-name" x="190" y="40" text-anchor="middle">其他間接排放</text>
+            <text class="rg-scope" x="190" y="58" text-anchor="middle">Scope 3</text>
+            <g class="rg-hot" transform="translate(171 322)">
+              <path d="M0 14h22V3H0zM22 14h11l4-6h-6V6h-9z" fill="#fff" stroke="currentColor" stroke-width="1.8" stroke-linejoin="round"/>
+              <circle cx="7" cy="17" r="3" fill="#fff" stroke="currentColor" stroke-width="1.8"/>
+              <circle cx="29" cy="17" r="3" fill="#fff" stroke="currentColor" stroke-width="1.8"/>
+            </g>
+            <text class="rg-hot-t" x="190" y="358" text-anchor="middle">進貨／出貨運輸</text>
+          </svg>
+        <div class="map" role="img" aria-label="企業排放地圖：直接排放、外購能源的間接排放、其他間接排放三層，其中運輸落在其他間接排放。">
+          <div class="ring ring-1">
+            <p class="ring-tag">自己動手排的</p>
+            <p class="ring-name">直接排放</p>
+            <p class="ring-eg">自家鍋爐、製程排放、公司自有車輛</p>
+            <p class="ring-scope">對應 Scope 1</p>
+          </div>
+          <div class="ring ring-2">
+            <p class="ring-tag">買來的能源</p>
+            <p class="ring-name">外購電力、蒸氣、熱</p>
+            <p class="ring-eg">工廠用的電，排放在發電端</p>
+            <p class="ring-scope">對應 Scope 2</p>
+          </div>
+          <div class="ring ring-3">
+            <p class="ring-tag">上下游，最容易漏</p>
+            <p class="ring-name">其他間接排放</p>
+            <p class="ring-eg">買來的原料、<strong>進貨與出貨的運輸</strong>、員工通勤與出差</p>
+            <p class="ring-scope">對應 Scope 3（其中「上游／下游運輸」正是本展主角）</p>
+          </div>
+        </div>
+        </div>
+        <p class="caption">左圖由內而外：越外圈越不在公司自己手上，也越難取得資料；卡車所在的外圈，就是下一個展區要處理的運輸排放。圖的分層方式與常見慣稱（Scope 1／2／3）對照；14064-1 本身把來源分成直接、外購能源、運輸、產品使用等多個類別，實務上常借用 GHG Protocol 的 Scope 說法來分類。</p>
+      </div>
+    </section>
+
+    <!-- ============ 03 銜接 ============ -->
+    <section id="s3" class="bridge exhibit" aria-labelledby="s3Title">
+      <header class="label">
+        <p class="no">展區 03</p>
+        <h2 id="s3Title">圈畫好了，然後呢？運輸這塊特別難算</h2>
+        <p class="why">問題：貨不是你自己送的。卡車、貨列、貨輪、轉運站都不是你的，你怎麼知道它排了多少？</p>
+      </header>
+      <div class="body">
+        <p>
+          在 14064-1 的盤查裡，企業「進來的貨」與「送出去的貨」所產生的運輸排放，屬於<strong>其他間接排放</strong>。
+          它難在兩點：<strong>一，排放發生在別人的車、別人的船、別人的車站上</strong>；
+          <strong>二，一趟運輸常常不是一段直線</strong>——先卡車到轉運站、轉火車、再卡車進倉，中間還可能換好幾個節點。
+          14064-1 告訴你「這塊要算」，但它<strong>不負責</strong>告訴你「運輸鏈要怎麼拆、要收哪些資料、怎麼算」。
+          這個缺口，就是 <strong>ISO 14083</strong> 出現的地方。
+        </p>
+        <div class="flow" role="img" aria-label="流程：企業碳盤查、ISO 14064-1、運輸相關排放、ISO 14083、運輸鏈排放量化">
+          <span>企業要做碳盤查</span><i>→</i>
+          <span>用 ISO 14064-1 圈出範圍</span><i>→</i>
+          <span class="hot">發現運輸排放要算</span><i>→</i>
+          <span class="hot">用 ISO 14083 算運輸鏈</span><i>→</i>
+          <span>把數字放回盤查報告</span>
+        </div>
+
+        <h3 class="sub">兩張標準的分工（不是誰取代誰）</h3>
+        <div class="table-wrap">
+          <table class="compare">
+            <caption>ISO 14064-1 與 ISO 14083 對照</caption>
+            <thead>
+              <tr><th scope="col"></th><th scope="col">ISO 14064-1</th><th scope="col">ISO 14083</th></tr>
+            </thead>
+            <tbody>
+              <tr><th scope="row">在看什麼</th><td>一個<strong>組織</strong>整體的排放與移除</td><td>一條<strong>運輸鏈</strong>的營運排放</td></tr>
+              <tr><th scope="row">範圍</th><td>所有來源：能源、製程、廢棄、運輸、產品使用⋯⋯</td><td>客運與貨運的運輸作業，以及支撐轉運的<strong>節點（hub）</strong>作業</td></tr>
+              <tr><th scope="row">主要產出</th><td>組織的溫室氣體盤查清單與報告</td><td>運輸鏈／運輸路段的排放量與排放強度</td></tr>
+              <tr><th scope="row">關係</th><td colspan="2">互補。14083 算出的運輸數字，可以放進 14064-1 的盤查裡；14083 不是 14064-1 的替代品，兩者處理的層級不同。</td></tr>
+            </tbody>
+          </table>
+        </div>
+        <p class="caption">ISO 14083 全名是「Greenhouse gases — Quantification and reporting of greenhouse gas emissions arising from transport chain operations」（溫室氣體——運輸鏈營運所產生溫室氣體排放的量化與報告），2023 年第一版。</p>
+      </div>
+    </section>
+
+    <!-- ============ 04 14083 運輸鏈 ============ -->
+    <section id="s4" class="exhibit" aria-labelledby="s4Title">
+      <header class="label">
+        <p class="no">展區 04</p>
+        <h2 id="s4Title">把一趟運輸拆開看：路段、節點、資料、數字</h2>
+        <p class="why">問題：一批貨從工廠到客戶，中間換了運具、換了場站，這算「一趟」還是「好幾趟」？</p>
+      </header>
+      <div class="body">
+        <p>
+          14083 把整段從起點到終點的運輸叫做<strong>運輸鏈</strong>（<button class="term" data-term="tc">Transport Chain, TC</button>），
+          再把它切成一段一段的<strong>運輸鏈元素</strong>（<button class="term" data-term="tce">Transport Chain Element, TCE</button>）。
+          一個 TCE 可以是「一段移動」（坐車／坐船移動的那一段），也可以是「經過一個轉運節點（<button class="term" data-term="hub">Hub</button>）」。
+          <strong>下面每一格都可以點</strong>，點下去看它需要哪些資料。
+        </p>
+
+        <div class="chain-tools">
+          <p class="chain-tools-label">顯示層</p>
+          <div class="switches">
+            <label><input type="checkbox" id="layerActivity" checked><span>活動資料</span></label>
+            <label><input type="checkbox" id="layerFactor" checked><span>排放強度</span></label>
+            <label><input type="checkbox" id="layerResult" checked><span>排放結果</span></label>
+          </div>
+          <p class="chain-hint">提示：用 Tab 在節點間移動，Enter 或空白鍵選取。</p>
+        </div>
+
+        <div class="chain" id="chain" role="group" aria-label="範例運輸鏈：起點、五個運輸鏈元素、終點">
+          <div class="end"><span>起點</span><b>工廠</b></div>
+          <button type="button" class="node mode-road" data-tce="1" aria-pressed="false">
+            <span class="node-tag">TCE 1</span><span class="node-ico" aria-hidden="true"><svg viewBox="0 0 40 24" width="40" height="24"><path d="M2 16h22V7H2zM24 16h11l4-6h-6V10h-9z" fill="none" stroke="currentColor" stroke-width="1.6"/><circle cx="10" cy="19" r="2.6" fill="none" stroke="currentColor" stroke-width="1.6"/><circle cx="30" cy="19" r="2.6" fill="none" stroke="currentColor" stroke-width="1.6"/></svg></span>
+            <span class="node-name">公路運輸</span>
+            <span class="node-meta"><em class="m-activity">50 km × 10 t</em><em class="m-factor">0.150 kg CO₂e/tkm</em><em class="m-result">75.0 kg CO₂e</em></span>
+          </button>
+          <div class="link road" aria-hidden="true"></div>
+          <button type="button" class="node mode-hub" data-tce="2" aria-pressed="false">
+            <span class="node-tag">TCE 2</span><span class="node-ico" aria-hidden="true"><svg viewBox="0 0 40 24" width="40" height="24"><path d="M20 2l9 5v10l-9 5-9-5V7z" fill="none" stroke="currentColor" stroke-width="1.6"/><path d="M14 12h12M20 6v12" stroke="currentColor" stroke-width="1.6"/></svg></span>
+            <span class="node-name">轉運 A</span>
+            <span class="node-meta"><em class="m-activity">10 t</em><em class="m-factor">1.07 kg CO₂e/t</em><em class="m-result">10.7 kg CO₂e</em></span>
+          </button>
+          <div class="link rail" aria-hidden="true"></div>
+          <button type="button" class="node mode-rail" data-tce="3" aria-pressed="false">
+            <span class="node-tag">TCE 3</span><span class="node-ico" aria-hidden="true"><svg viewBox="0 0 40 24" width="40" height="24"><rect x="5" y="4" width="30" height="13" rx="2" fill="none" stroke="currentColor" stroke-width="1.6"/><path d="M5 11h30M12 17v3M28 17v3M8 21h24" stroke="currentColor" stroke-width="1.6" fill="none"/><circle cx="13" cy="17" r="1.8" fill="currentColor"/><circle cx="27" cy="17" r="1.8" fill="currentColor"/></svg></span>
+            <span class="node-name">鐵路運輸</span>
+            <span class="node-meta"><em class="m-activity">500 km × 10 t</em><em class="m-factor">0.014 kg CO₂e/tkm</em><em class="m-result">71.9 kg CO₂e</em></span>
+          </button>
+          <div class="link rail" aria-hidden="true"></div>
+          <button type="button" class="node mode-hub" data-tce="4" aria-pressed="false">
+            <span class="node-tag">TCE 4</span><span class="node-ico" aria-hidden="true"><svg viewBox="0 0 40 24" width="40" height="24"><path d="M20 2l9 5v10l-9 5-9-5V7z" fill="none" stroke="currentColor" stroke-width="1.6"/><path d="M14 12h12M20 6v12" stroke="currentColor" stroke-width="1.6"/></svg></span>
+            <span class="node-name">轉運 B</span>
+            <span class="node-meta"><em class="m-activity">10 t</em><em class="m-factor">1.07 kg CO₂e/t</em><em class="m-result">10.7 kg CO₂e</em></span>
+          </button>
+          <div class="link road" aria-hidden="true"></div>
+          <button type="button" class="node mode-road" data-tce="5" aria-pressed="false">
+            <span class="node-tag">TCE 5</span><span class="node-ico" aria-hidden="true"><svg viewBox="0 0 40 24" width="40" height="24"><path d="M2 16h22V7H2zM24 16h11l4-6h-6V10h-9z" fill="none" stroke="currentColor" stroke-width="1.6"/><circle cx="10" cy="19" r="2.6" fill="none" stroke="currentColor" stroke-width="1.6"/><circle cx="30" cy="19" r="2.6" fill="none" stroke="currentColor" stroke-width="1.6"/></svg></span>
+            <span class="node-name">公路運輸</span>
+            <span class="node-meta"><em class="m-activity">100 km × 10 t</em><em class="m-factor">0.150 kg CO₂e/tkm</em><em class="m-result">150 kg CO₂e</em></span>
+          </button>
+          <div class="end"><span>終點</span><b>客戶</b></div>
+        </div>
+
+        <p class="chain-note">閱讀方向：由左至右＝貨物行進方向。點線＝公路，虛線＝鐵路。</p>
+
+        <div class="chain-detail" id="chainDetail" aria-live="polite">
+          <p class="chain-detail-title">節點說明</p>
+          <p id="chainDetailText">點選上方任一 TCE，這裡會顯示：它是運輸活動還是轉運活動、需要哪些資料、以及 14083 為什麼要把它單獨切出來。</p>
+        </div>
+
+        <div class="legend">
+          <p class="legend-title">圖例</p>
+          <ul>
+            <li><i class="sw road"></i>公路路段（卡車）</li>
+            <li><i class="sw rail"></i>鐵道路段（貨列）</li>
+            <li><i class="sw hub"></i>轉運節點 Hub（裝卸、轉運）</li>
+            <li><i class="sw dot"></i>可點擊的 TCE</li>
+          </ul>
+        </div>
+
+        <h3 class="sub">同一趟運輸，其實有兩層排放</h3>
+        <p>
+          14083 把排放分成兩塊：<strong>營運排放</strong>（<button class="term" data-term="operation">Operation GHG Emissions</button>）是車、船、場站<strong>實際運轉</strong>時排的；
+          <strong>能源供應排放</strong>（<button class="term" data-term="energy-provision">Energy Provision GHG Emissions</button>）是燃料與電力在<strong>開採、生產、儲存、運輸到油箱之前</strong>就已經排的。
+          只算排氣管會低估，兩層加起來才是 14083 的<strong>總排放</strong>（<button class="term" data-term="total-ghg">Total GHG Emissions</button>）。
+        </p>
+        <div class="fuelchain" role="img" aria-label="從能源開採到油箱的能源供應排放，再到車輪轉動的營運排放，兩者相加為總排放">
+          <div class="fc-seg fc-ep">
+            <p class="fc-tag">能源供應排放</p>
+            <p class="fc-name">油井／開採 → 煉製 → 運輸到加油站</p>
+            <p class="fc-eg">柴油被開採、煉製、送到加油站的過程中已經排的碳</p>
+          </div>
+          <span class="fc-plus" aria-hidden="true">＋</span>
+          <div class="fc-seg fc-op">
+            <p class="fc-tag">營運排放</p>
+            <p class="fc-name">油箱 → 車輪轉動</p>
+            <p class="fc-eg">卡車引擎燒掉那 30 公升柴油時排的碳</p>
+          </div>
+          <span class="fc-plus" aria-hidden="true">＝</span>
+          <div class="fc-seg fc-total">
+            <p class="fc-tag">總排放</p>
+            <p class="fc-name">能源供應 ＋ 營運</p>
+            <p class="fc-eg">14083 報告裡要呈現的數字</p>
+          </div>
+        </div>
+        <p class="caption">舊的歐洲標準 EN 16258 用 Well-to-Tank／Tank-to-Wheel 說法；ISO 14083 改稱 energy provision 與 operation，概念相近。</p>
+      </div>
+    </section>
+
+    <!-- ============ 05 術語 ============ -->
+    <section id="glossary" class="exhibit" aria-labelledby="s5Title">
+      <header class="label">
+        <p class="no">展區 05</p>
+        <h2 id="s5Title">術語翻譯區：正式名稱、中文、白話、例子</h2>
+        <p class="why">問題：標準裡的詞，字典查不到、查到了也看不懂。</p>
+      </header>
+      <div class="body">
+        <p>
+          每個詞都分成四層：<strong>正式名稱</strong>（標準用的英文）、<strong>中文說明</strong>、<strong>白話解釋</strong>、以及<strong>一個具體情境</strong>。
+          定義取自 ISO 官方與 CLECAT／Umweltbundesamt 的 ISO 14083 應用指南，並由本展以白話重述；若原文與譯法有爭議，會在該條目註明。
+        </p>
+        <div class="gloss-controls">
+          <div class="search">
+            <label for="glossSearch">搜尋術語</label>
+            <input id="glossSearch" type="search" placeholder="例如：allocation、轉運、tkm" autocomplete="off">
+          </div>
+          <div class="filters" role="group" aria-label="術語分類篩選">
+            <button type="button" class="chip is-on" data-filter="all">全部</button>
+            <button type="button" class="chip" data-filter="chain">運輸鏈結構</button>
+            <button type="button" class="chip" data-filter="data">資料與計算</button>
+            <button type="button" class="chip" data-filter="ghg">排放與氣體</button>
+            <button type="button" class="chip" data-filter="org">14064 相關</button>
+          </div>
+        </div>
+        <p class="gloss-count" id="glossCount" aria-live="polite"></p>
+        <ul class="gloss" id="glossList"></ul>
+      </div>
+    </section>
+
+    <!-- ============ 06 案例 ============ -->
+    <section id="case" class="exhibit" aria-labelledby="caseTitle">
+      <header class="label">
+        <p class="no">展區 06</p>
+        <h2 id="caseTitle">一批貨走完全程：資料怎麼變成數字</h2>
+        <p class="why">問題：手上有距離、有重量，然後呢？</p>
+      </header>
+      <div class="body">
+        <div class="case-switch" role="group" aria-label="案例選擇">
+          <button type="button" class="case-tab is-on" data-case="a" aria-pressed="true">案例 A｜跨運（公路＋鐵路＋轉運）</button>
+          <button type="button" class="case-tab" data-case="b" aria-pressed="false">案例 B｜短途轉運（教學假設）</button>
+        </div>
+
+        <div class="case-meta">
+          <p class="case-meta-title" id="caseMetaTitle">案例 A 的背景</p>
+          <dl class="facts" id="caseFacts"></dl>
+          <div class="case-viz" id="caseViz"></div>
+          <p class="source" id="caseSource"></p>
+        </div>
+
+        <div class="player">
+          <ol class="player-tabs" role="tablist" aria-label="計算步驟">
+            <li role="tab" aria-selected="true" tabindex="0" data-step="0" id="pt0">1 界定運輸鏈</li>
+            <li role="tab" aria-selected="false" tabindex="-1" data-step="1" id="pt1">2 拆成 TCE</li>
+            <li role="tab" aria-selected="false" tabindex="-1" data-step="2" id="pt2">3 算活動量</li>
+            <li role="tab" aria-selected="false" tabindex="-1" data-step="3" id="pt3">4 選排放強度</li>
+            <li role="tab" aria-selected="false" tabindex="-1" data-step="4" id="pt4">5 算各段排放</li>
+            <li role="tab" aria-selected="false" tabindex="-1" data-step="5" id="pt5">6 加總與換算</li>
+          </ol>
+          <div class="player-panel" role="tabpanel" aria-labelledby="pt0" id="playerPanel" tabindex="0"></div>
+          <p class="player-nav"><button type="button" class="btn ghost" id="prevStep">← 上一步</button><button type="button" class="btn ghost" id="nextStep">下一步 →</button></p>
+        </div>
+
+        <h3 class="sub">分配（Allocation）：同一台車載三批貨，誰排多少？</h3>
+        <p>
+          一台車同時載好幾批貨時，不能把整趟排放都算給其中一批。<strong>14083 要求以實際質量來分配</strong>。
+          下面自己拖動看看：三批貨各多重、各分到多少排放，以及如果改用「平均分配」會差多少。
+        </p>
+        <div class="alloc" id="alloc">
+          <div class="alloc-controls">
+            <div class="slider">
+              <label for="mA">貨件 A 質量：<output id="oA">2</output> t</label>
+              <input id="mA" type="range" min="1" max="10" step="1" value="2">
+            </div>
+            <div class="slider">
+              <label for="mB">貨件 B 質量：<output id="oB">4</output> t</label>
+              <input id="mB" type="range" min="1" max="10" step="1" value="4">
+            </div>
+            <div class="slider">
+              <label for="mC">貨件 C 質量：<output id="oC">6</output> t</label>
+              <input id="mC" type="range" min="1" max="10" step="1" value="6">
+            </div>
+            <div class="seg" role="group" aria-label="分配方式">
+              <button type="button" class="seg-btn is-on" data-key="mass" aria-pressed="true">依質量分配（14083 的做法）</button>
+              <button type="button" class="seg-btn" data-key="even" aria-pressed="false">平均分配（對照用）</button>
+            </div>
+          </div>
+          <div class="alloc-out" id="allocOut" aria-live="polite"></div>
+          <p class="caption" id="allocNote"></p>
+        </div>
+      </div>
+    </section>
+
+    <!-- ============ 07 收尾 ============ -->
+    <section id="s7" class="exhibit" aria-labelledby="s7Title">
+      <header class="label">
+        <p class="no">展區 07</p>
+        <h2 id="s7Title">走出展場前，你應該能回答這五題</h2>
+        <p class="why">先自己想，再展開對照。</p>
+      </header>
+      <div class="body">
+        <ul class="quiz" id="quiz">
+          <li>
+            <button class="quiz-btn" aria-expanded="false" aria-controls="quiz-1">ISO 14064-1 在處理什麼問題？</button>
+            <div class="quiz-a" id="quiz-1"><p>一個<strong>組織</strong>（公司、集團）的溫室氣體排放與移除，要怎麼設計、量化、報告。它管的是「這家公司總共排多少」。</p></div>
+          </li>
+          <li>
+            <button class="quiz-btn" aria-expanded="false" aria-controls="quiz-2">ISO 14083 又在處理什麼問題？</button>
+            <div class="quiz-a" id="quiz-2"><p>一條<strong>運輸鏈</strong>（客運或貨運）的營運排放要怎麼量化與報告：鏈子怎麼拆成 TCE、每個 TCE 要收哪些活動資料、排放怎麼算、怎麼回報。</p></div>
+          </li>
+          <li>
+            <button class="quiz-btn" aria-expanded="false" aria-controls="quiz-3">兩者是誰取代誰嗎？</button>
+            <div class="quiz-a" id="quiz-3"><p>都不是。它們在不同層級工作：14064-1 圈出組織範圍並把運輸歸為其他間接排放，14083 提供那一段運輸鏈的算法。14083 的產出可以放進 14064-1 的盤查裡。</p></div>
+          </li>
+          <li>
+            <button class="quiz-btn" aria-expanded="false" aria-controls="quiz-4">為什麼轉運站也要算進去？</button>
+            <div class="quiz-a" id="quiz-4"><p>因為轉運（hub operation）本身會耗能、會排碳，14083 把 hub 也當成一個 TCE。即使轉運不增加「噸公里」，它的排放仍計入整條運輸鏈。</p></div>
+          </li>
+          <li>
+            <button class="quiz-btn" aria-expanded="false" aria-controls="quiz-5">為什麼只看排氣管不夠？</button>
+            <div class="quiz-a" id="quiz-5"><p>燃料在開採、煉製、運到油箱之前就已經排過一次（能源供應排放）。14083 要把它和車輛實際運轉的營運排放加在一起，才是總排放。</p></div>
+          </li>
+        </ul>
+        <div class="closing">
+          <p class="closing-title">如果只記一句話</p>
+          <p class="closing-text"><strong>14064-1 看的是「公司」，14083 看的是「一趟運輸」。</strong>前者告訴你運輸排放要算進盤查，後者告訴你它到底怎麼算。</p>
+        </div>
+      </div>
+    </section>
+
+    <!-- ============ 08 參考資料 ============ -->
+    <section id="refs" class="exhibit" aria-labelledby="refsTitle">
+      <header class="label">
+        <p class="no">展區 08</p>
+        <h2 id="refsTitle">參考資料與資料誠信說明</h2>
+        <p class="why">展場裡每個數字都要能回溯。</p>
+      </header>
+      <div class="body">
+        <ul class="refs">
+          <li>
+            <p class="ref-name"><a href="https://www.iso.org/standard/78864.html" target="_blank" rel="noopener noreferrer">ISO 14083:2023 — Greenhouse gases — Quantification and reporting of greenhouse gas emissions arising from transport chain operations</a></p>
+            <p class="ref-use">用途：確認 ISO 14083 的正式名稱、出版年份與範圍。本展僅引用 ISO 官方公開的標準標題與摘要，未重述標準條文。</p>
+          </li>
+          <li>
+            <p class="ref-name"><a href="https://www.iso.org/standard/66453.html" target="_blank" rel="noopener noreferrer">ISO 14064-1:2019 — Greenhouse gases — Part 1: Specification with guidance at the organization level</a></p>
+            <p class="ref-use">用途：確認 14064-1 的正式名稱與「組織層級」定位。</p>
+          </li>
+          <li>
+            <p class="ref-name">NQA, <em>An Introduction to ISO 14064-1</em>（本專案參考文獻：ISO-14064-Introduction-17-05-2024.pdf）</p>
+            <p class="ref-use">用途：14064-1／-2／-3 三份標準的分工描述，以及盤查類別與 Scope 1／2／3 的對照。</p>
+          </li>
+          <li>
+            <p class="ref-name">CLECAT（譯自 Umweltbundesamt）, <em>Greenhouse gas emissions in the transport sector — Guide to ISO 14083</em>（本專案參考文獻：clecat-guide-to-iso-14083⋯.pdf）</p>
+            <p class="ref-use">用途：本展術語定義（TCE、TC、Transport activity、Hub activity/operation、TO/TOC、SFD/GCD、primary/secondary data、allocation、operation 與 energy provision GHG emissions、emission factor/intensity）與<strong>案例 A 的全部數值</strong>（10 t、50／500／100 km、0.150／0.014 kg CO₂e/tkm、1.07 kg CO₂e/t、318.3 kg CO₂e、6,500 tkm、0.049 kg CO₂e/tkm）。</p>
+          </li>
+          <li>
+            <p class="ref-name">WRI &amp; WBCSD, <em>GHG Protocol Corporate Standard</em>（本專案參考文獻：Scope_3_Handbook_2019_FINAL.pdf）</p>
+            <p class="ref-use">用途：Scope 1／2／3 與「上游／下游運輸」的慣稱對照。本展用「直接／外購能源／其他間接」的說法呈現，Scope 僅作為對照標籤。</p>
+          </li>
+        </ul>
+        <div class="integrity">
+          <h3 class="sub">關於本展數字的三點說明</h3>
+          <ol>
+            <li><strong>案例 A 的數值</strong>取自 CLECAT／Umweltbundesamt 指南中的實際範例計算，該指南是為說明 ISO 14083 用法而寫的公開出版品；它<strong>不是</strong>你公司或你貨物的實際排放。</li>
+            <li><strong>案例 B 的距離與質量是教學假設</strong>，排放強度沿用案例 A 的示意值，只為了示範流程，<strong>不得</strong>作為正式排放因子或盤查結果使用。</li>
+            <li><strong>分配（Allocation）互動</strong>示範的是「依實際質量分配」的概念。真實計算還涉及載重、空返、多式聯運、一次／二次資料等規定，本展未涵蓋。</li>
+          </ol>
+          <p class="disclaimer">本展為教育與科普用途，內容為對公開資料的白話重述與教學示範，不構成正式盤查、查證、認證或法律建議。若需正式應用，請取得並依適用標準全文與主管機關指引辦理。</p>
+        </div>
+      </div>
+    </section>
+
+    <footer class="foot">
+      <p>從 ISO 14064 到 ISO 14083｜互動科普展</p>
+      <p>繁體中文・純靜態網頁・無追蹤、無登入、無資料庫</p>
+    </footer>
+  </main>
+</div>
+
+<!-- 術語抽屜 -->
+<div class="drawer" id="drawer" role="dialog" aria-modal="true" aria-labelledby="drawerTitle" hidden>
+  <div class="drawer-inner">
+    <button type="button" class="drawer-close" id="drawerClose" aria-label="關閉術語說明">關閉 ✕</button>
+    <p class="drawer-kicker">術語</p>
+    <h3 id="drawerTitle"></h3>
+    <dl class="drawer-body"></dl>
+    <p class="drawer-src"></p>
+  </div>
+</div>
+
+<script src="./assets/app.js"></script>
+</body>
+</html>
