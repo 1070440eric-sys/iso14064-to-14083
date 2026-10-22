@@ -285,7 +285,7 @@
       </header>
       <div class="body">
         <p>
-          在 14064-1 的盤查裡，企業「進來的貨」與「送出去的貨」所產生的運輸排放，屬於<strong>其他間接排放</strong>。
+          在 14064-1 的盤查裡，企業「進來的貨」與「送出去的貨」所產生的運輸排放，屬於<strong>間接排放</strong>（14064-1 的類別 3，慣稱 Scope 3）。
           它難在兩點：<strong>一，排放發生在別人的車、別人的船、別人的車站上</strong>；
           <strong>二，一趟運輸常常不是一段直線</strong>——先卡車到轉運站、轉火車、再卡車進倉，中間還可能換好幾個節點。
           14064-1 告訴你「這塊要算」，但它<strong>不負責</strong>告訴你「運輸鏈要怎麼拆、要收哪些資料、怎麼算」。
@@ -298,6 +298,49 @@
           <span class="hot">用 ISO 14083 算運輸鏈</span><i>→</i>
           <span>把數字放回盤查報告</span>
         </div>
+
+        <h3 class="sub">其實 14064-1 自己就有「運輸」這一類</h3>
+        <p>
+          常聽到的 Scope 1／2／3 是 GHG Protocol 的說法。14064-1 本身把排放分成<strong>六個類別</strong>，
+          其中<strong>類別 3 就是運輸造成的間接排放</strong>。14064-1 規定這一類要盤查、要報告；
+          至於一條運輸鏈要怎麼拆、怎麼算，就交給 14083。
+        </p>
+        <div class="catmap">
+          <div class="cm-col cm-left">
+            <p class="cm-head">ISO 14064-1｜組織的六個排放類別</p>
+            <ol class="cm-list">
+              <li><b>類別 1</b>直接排放<em>≈ Scope 1</em></li>
+              <li><b>類別 2</b>輸入能源的間接排放<em>≈ Scope 2</em></li>
+              <li class="cm-hot"><b>類別 3</b>運輸造成的間接排放<em>≈ Scope 3 的運輸部分</em></li>
+              <li><b>類別 4</b>組織使用之產品的間接排放<em>例：買來的原料</em></li>
+              <li><b>類別 5</b>使用組織產品的間接排放<em>例：客戶使用你賣出的產品</em></li>
+              <li><b>類別 6</b>其他來源的間接排放</li>
+            </ol>
+          </div>
+          <div class="cm-arrow" aria-hidden="true"><span>這一類<br>怎麼算？</span></div>
+          <div class="cm-col cm-right">
+            <p class="cm-head">ISO 14083｜提供運輸鏈的算法</p>
+            <ul class="cm-tools">
+              <li><b>拆成 TCE</b>把一趟運輸切成路段與轉運節點</li>
+              <li><b>運輸作業類別（TOC）</b>同類車輛／燃料歸一組，算出每噸公里排放強度</li>
+              <li><b>轉運作業類別（HOC）</b>轉運站也有自己的排放強度（每噸）</li>
+              <li><b>排放分配（Allocation）</b>同一趟載很多批貨時，依實際質量分給每一批</li>
+            </ul>
+          </div>
+        </div>
+        <p class="caption">六個類別依 ISO 14064-1:2018 第 5 章，中文為本展翻譯；與 Scope 的對照引用 NQA《An Introduction to ISO 14064-1》。</p>
+
+        <h3 class="sub">同一趟運輸，兩個標準各看什麼</h3>
+        <figure class="photo-fig">
+          <a href="./assets/img/case-two-standards.jpg" target="_blank" rel="noopener" aria-label="開啟原尺寸圖片">
+            <img src="./assets/img/case-two-standards.jpg" width="1672" height="709" loading="lazy"
+              alt="示意圖：台中工廠用貨車把貨送到桃園物流中心轉運，再送到台北客戶。上半部標示 ISO 14064-1 從 A 公司整體的角度盤查排放，外包運輸可納入盤查範圍；下半部標示 ISO 14083 從運輸鏈角度，把這趟運輸拆成運輸段 1、轉運節點、運輸段 2 三個 TCE。">
+          </a>
+          <figcaption>
+            上半部是 14064-1 的視角：看「A 公司整體」；下半部是 14083 的視角：看「這一趟運輸」，拆成兩段貨車運送加一個轉運節點。這條路線就是<a href="#case">展區 06 的案例 B</a>。
+            <span class="ai-note">圖片為 AI 輔助生成（Gemini），內容經本展人工校對；點圖可看原尺寸。</span>
+          </figcaption>
+        </figure>
 
         <h3 class="sub">兩張標準的分工（不是誰取代誰）</h3>
         <div class="table-wrap">
@@ -535,7 +578,7 @@
           </li>
           <li>
             <button class="quiz-btn" aria-expanded="false" aria-controls="quiz-3">兩者是誰取代誰嗎？</button>
-            <div class="quiz-a" id="quiz-3"><p>都不是。它們在不同層級工作：14064-1 圈出組織範圍並把運輸歸為其他間接排放，14083 提供那一段運輸鏈的算法。14083 的產出可以放進 14064-1 的盤查裡。</p></div>
+            <div class="quiz-a" id="quiz-3"><p>都不是。它們在不同層級工作：14064-1 圈出組織範圍，並把運輸列為類別 3（運輸造成的間接排放），14083 提供那一段運輸鏈的算法。14083 的產出可以放進 14064-1 的盤查裡。</p></div>
           </li>
           <li>
             <button class="quiz-btn" aria-expanded="false" aria-controls="quiz-4">為什麼轉運站也要算進去？</button>
@@ -567,7 +610,7 @@
             <p class="ref-use">用途：確認 ISO 14083 的正式名稱、出版年份與範圍。本展僅引用 ISO 官方公開的標準標題與摘要，未重述標準條文。</p>
           </li>
           <li>
-            <p class="ref-name"><a href="https://www.iso.org/standard/66453.html" target="_blank" rel="noopener noreferrer">ISO 14064-1:2019 — Greenhouse gases — Part 1: Specification with guidance at the organization level</a></p>
+            <p class="ref-name"><a href="https://www.iso.org/standard/66453.html" target="_blank" rel="noopener noreferrer">ISO 14064-1:2018 — Greenhouse gases — Part 1: Specification with guidance at the organization level</a></p>
             <p class="ref-use">用途：確認 14064-1 的正式名稱與「組織層級」定位。</p>
           </li>
           <li>
