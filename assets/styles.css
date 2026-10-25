@@ -818,6 +818,62 @@ table.compare tbody th{background:var(--paper-2);font-weight:600;width:120px}
   .cm-arrow::after{content:"\2193"}
 }
 
+/* ---------- 第二輪美編：學習目標、重點、摺疊、測驗 ---------- */
+.goal{grid-column:2;grid-row:3;margin:12px 0 0;font-size:15px;color:var(--ink);background:var(--paper-2);border-radius:var(--radius);padding:10px 14px;max-width:70ch}
+.goal b{display:inline-block;font-family:var(--mono);font-size:11px;letter-spacing:.12em;color:var(--sea);margin-right:10px;font-weight:600}
+.takeaway{margin:34px 0 0;padding:16px 18px;border:2px solid var(--ink);border-radius:var(--radius);background:#fff;font-family:var(--serif);font-size:18px;line-height:1.6;max-width:none}
+.takeaway b{display:block;font-family:var(--mono);font-size:11px;letter-spacing:.16em;color:var(--signal);margin-bottom:4px}
+
+details.more{margin:16px 0 0;border:1px solid var(--rule);border-radius:var(--radius);background:#fff}
+details.more>summary{cursor:pointer;list-style:none;padding:11px 14px;font-size:14.5px;color:var(--ink-soft);display:flex;align-items:center;gap:10px}
+details.more>summary::-webkit-details-marker{display:none}
+details.more>summary::before{content:"+";font-family:var(--mono);font-size:16px;color:var(--sea);width:14px;text-align:center}
+details.more[open]>summary::before{content:"–"}
+details.more>summary:hover{color:var(--ink);background:var(--paper)}
+details.more>.more-body{padding:4px 16px 16px;border-top:1px dashed var(--rule)}
+details.more .more-body>.caption:first-child{margin-top:12px}
+details.read-more{border:2px solid var(--sea);margin-top:28px}
+details.read-more>summary{font-family:var(--serif);font-size:17px;color:var(--ink);font-weight:600;padding:14px 16px}
+details.read-more>summary::before{content:"→";color:var(--sea)}
+details.read-more[open]>summary::before{content:"↓"}
+details.more-anim>summary{color:var(--signal);font-weight:600}
+details.more-anim>.more-body{padding:12px}
+figcaption details.more{background:transparent}
+.sb-lead,.sb-warn{margin-top:10px}
+.plate-related{border-top-color:var(--signal)!important}
+
+.gloss-more{border-bottom:0!important;padding:16px 0 0}
+
+.quiz-mc{display:grid;gap:14px;border-top:0}
+.quiz-mc .mc{border:1px solid var(--rule);border-radius:var(--radius);background:#fff;padding:16px 18px;border-bottom:1px solid var(--rule)}
+.quiz-mc .mc.is-right{border-color:var(--ok);box-shadow:inset 4px 0 0 var(--ok)}
+.quiz-mc .mc.is-wrong{border-color:var(--signal);box-shadow:inset 4px 0 0 var(--signal)}
+.mc-q{font-family:var(--serif);font-size:19px;margin:0 0 12px;line-height:1.5}
+.mc-q b{font-family:var(--mono);font-size:12px;color:var(--signal);margin-right:10px;letter-spacing:.08em}
+.mc-opts{display:grid;grid-template-columns:repeat(2,minmax(0,1fr));gap:8px}
+.mc-opt{display:flex;gap:10px;align-items:flex-start;text-align:left;background:var(--paper);border:1px solid var(--rule);border-radius:var(--radius);padding:10px 12px;font-size:15px;line-height:1.5;cursor:pointer;transition:background .15s,border-color .15s}
+.mc-opt:hover:not(:disabled){border-color:var(--sea);background:var(--sea-soft)}
+.mc-opt:disabled{cursor:default;opacity:.55}
+.mc-opt.is-ans{opacity:1;border-color:var(--ok);background:#E3EFE8}
+.mc-opt.is-pick:not(.is-ans){opacity:1;border-color:var(--signal);background:var(--signal-soft)}
+.mc-key{flex:0 0 22px;height:22px;border-radius:50%;background:#fff;border:1px solid var(--rule);font-family:var(--mono);font-size:12px;display:flex;align-items:center;justify-content:center}
+.mc-opt.is-ans .mc-key{background:var(--ok);border-color:var(--ok);color:#fff}
+.mc-opt.is-pick:not(.is-ans) .mc-key{background:var(--signal);border-color:var(--signal);color:#fff}
+.mc-fb p{margin:12px 0 0;font-size:15px;color:var(--ink-soft)}
+.mc-fb strong{color:var(--ink);margin-right:6px}
+.mc.is-right .mc-fb strong{color:var(--ok)}
+.mc.is-wrong .mc-fb strong{color:var(--signal)}
+.mc-score{border:0!important;padding:4px 0 0;font-size:15px}
+.mc-prog{font-family:var(--mono);font-size:12px;color:var(--muted)}
+.mc-total{font-family:var(--serif);font-size:22px;margin:0}
+.mc-total b{color:var(--signal);font-size:30px}
+@media (hover:none){.chain-hint{display:none}}
+@media (max-width:1000px){.goal{grid-column:1;grid-row:auto}}
+@media (max-width:640px){
+  .mc-opts{grid-template-columns:1fr}
+  .takeaway{font-size:16.5px}
+}
+
 /* ---------- reduced motion ---------- */
 @media (prefers-reduced-motion:reduce){
   html{scroll-behavior:auto}

@@ -220,12 +220,15 @@
   }
 
   var activeFilter = "all";
+  // 提案書列的 7 個核心術語：預設只顯示這些，避免第一眼像在讀字典
+  var CORE_TERMS = ["tce", "transport-activity", "hub", "allocation", "energy-provision", "operation", "co2e"];
+  var showAllTerms = false;
 
   function renderGloss() {
     var q = (searchBox.value || "").trim().toLowerCase();
     var items = GLOSS.filter(function (t) {
       if (activeFilter !== "all" && t.cat !== activeFilter) { return false; }
-      if (!q) { return true; }
+      if (!q) { return showAllTerms || activeFilter !== "all" || CORE_TERMS.indexOf(t.id) >= 0; }
       var hay = (t.abbr + " " + t.en + " " + t.zh + " " + t.plain + " " + t.eg).toLowerCase();
       return hay.indexOf(q) >= 0;
     });
@@ -251,8 +254,21 @@
       row.appendChild(btn);
       glossList.appendChild(row);
     });
-    glossCount.textContent = "共 " + items.length + " 個術語" +
-      (activeFilter === "all" ? "" : "（分類：" + filterLabel(activeFilter) + "）");
+    var coreView = !q && activeFilter === "all" && !showAllTerms;
+    glossCount.textContent = coreView
+      ? "先看最常用的 " + items.length + " 個（全部共 " + GLOSS.length + " 個）"
+      : "共 " + items.length + " 個術語" + (activeFilter === "all" ? "" : "（分類：" + filterLabel(activeFilter) + "）");
+    if (coreView) {
+      var moreLi = document.createElement("li");
+      moreLi.className = "gloss-more";
+      var moreBtn = document.createElement("button");
+      moreBtn.type = "button";
+      moreBtn.className = "btn";
+      moreBtn.textContent = "看全部 " + GLOSS.length + " 個術語 ↓";
+      moreBtn.addEventListener("click", function () { showAllTerms = true; renderGloss(); });
+      moreLi.appendChild(moreBtn);
+      glossList.appendChild(moreLi);
+    }
   }
 
   function filterLabel(f) {
@@ -333,6 +349,82 @@
   }
   wireAccordion("#invSteps", ".step-btn");
   wireAccordion("#quiz", ".quiz-btn");
+
+  /* ---------------------------------------------------------
+     3b. 測驗：把展開式問答升級成選擇題（無 JS 時保留原本的問答）
+     --------------------------------------------------------- */
+  var QUIZ = [
+    { q: "ISO 14064-1 在處理什麼問題？",
+      opts: ["一家公司（組織）整體排了多少溫室氣體", "一批貨的運輸鏈排了多少", "一個減碳專案到底少排了多少", "第三方怎麼檢查別人的排放報告"],
+      a: 0, why: "14064-1 管的是「組織層級」：先畫一個圈把公司圈起來，再算圈裡圈外跟它有關的排放。減碳專案是 14064-2，查核是 14064-3。" },
+    { q: "ISO 14083 又在處理什麼問題？",
+      opts: ["一家公司全年總排放", "一條運輸鏈（貨運或客運）的排放怎麼量化與報告", "一個產品從搖籃到墳墓的碳足跡", "卡車工廠製造車輛時的排放"],
+      a: 1, why: "14083 專門處理運輸鏈：拆成 TCE、每格收活動資料、算排放、再回報。產品碳足跡是 ISO 14067 的範圍。" },
+    { q: "14064-1 和 14083 是什麼關係？",
+      opts: ["14083 取代了 14064-1", "14064-1 取代了 14083", "互補：14064-1 說運輸要算，14083 說怎麼算，結果可以放回盤查", "兩者完全無關"],
+      a: 2, why: "它們在不同層級工作。14083 算出的運輸數字，可以放回 14064-1 的盤查裡（運輸造成的間接排放，類別 3）。" },
+    { q: "轉運站不產生任何「噸公里」，它的排放要算進運輸鏈嗎？",
+      opts: ["不用，沒有距離就沒有排放", "要，轉運站本身也是一個 TCE，耗能就會排碳", "只有冷藏轉運站才要算", "算進公司盤查就好，不算運輸鏈"],
+      a: 1, why: "轉運（hub operation）的照明、裝卸、冷暖都會耗能。案例 A 兩個轉運站共 21.4 kg CO₂e，約佔 7%，不大但不能漏。" },
+    { q: "為什麼 100 km 的公路，排得比 500 km 的貨列還多？",
+      opts: ["公路比較會塞車", "公路每噸公里的排放強度約是鐵路的 10 倍", "貨列完全不排放", "其實是計算錯誤"],
+      a: 1, why: "公路 0.150、鐵路 0.014 kg CO₂e/tkm。1,000 tkm × 0.150 ＝ 150 kg，比 5,000 tkm 的貨列（約 70 kg）還多。距離短不代表排得少。" },
+    { q: "如果只報告「車跑起來排了多少」，會發生什麼事？",
+      opts: ["剛好就是 14083 要的總排放", "會少算燃料進油箱前的能源供應排放（案例 A 約 47%）", "會多算一倍", "差不到 1%，可以忽略"],
+      a: 1, why: "14083 的總排放＝營運排放＋能源供應排放。柴油在開採、煉製、運輸的過程就已經排過一次碳。" }
+  ];
+  var quizRoot = document.getElementById("quiz");
+  if (quizRoot) {
+    var quizDone = 0, quizScore = 0;
+    quizRoot.classList.add("quiz-mc");
+    quizRoot.innerHTML = QUIZ.map(function (it, i) {
+      return '<li class="mc" data-i="' + i + '"><p class="mc-q"><b>Q' + (i + 1) + '</b>' + esc(it.q) + '</p>' +
+        '<div class="mc-opts" role="group" aria-label="第 ' + (i + 1) + ' 題選項">' +
+        it.opts.map(function (o, k) {
+          return '<button type="button" class="mc-opt" data-k="' + k + '"><span class="mc-key">' + "ABCD"[k] + '</span>' + esc(o) + '</button>';
+        }).join("") + '</div><div class="mc-fb" aria-live="polite"></div></li>';
+    }).join("") + '<li class="mc-score" id="mcScore" aria-live="polite"></li>';
+    var scoreEl = document.getElementById("mcScore");
+    function renderScore() {
+      if (quizDone < QUIZ.length) {
+        scoreEl.innerHTML = '<span class="mc-prog">已作答 ' + quizDone + ' / ' + QUIZ.length + ' 題</span>';
+        return;
+      }
+      var msg = quizScore === QUIZ.length ? "全對！你已經可以跟別人解釋 14064-1 和 14083 的差別了。"
+        : quizScore >= 4 ? "很不錯！答錯的題目可以回到對應展區再看一次。"
+        : "沒關係，回到參觀路線再走一次，答案都在展區裡。";
+      scoreEl.innerHTML = '<p class="mc-total"><b>' + quizScore + ' / ' + QUIZ.length + '</b> 題答對</p><p>' + msg +
+        '</p><button type="button" class="btn" id="mcRetry">重新作答</button>';
+      document.getElementById("mcRetry").addEventListener("click", function () {
+        quizDone = 0; quizScore = 0;
+        quizRoot.querySelectorAll(".mc").forEach(function (li) {
+          li.classList.remove("is-right", "is-wrong");
+          li.querySelector(".mc-fb").innerHTML = "";
+          li.querySelectorAll(".mc-opt").forEach(function (b) { b.disabled = false; b.classList.remove("is-pick", "is-ans"); });
+        });
+        renderScore();
+        quizRoot.querySelector(".mc-opt").focus();
+      });
+    }
+    quizRoot.addEventListener("click", function (e) {
+      var btn = e.target.closest ? e.target.closest(".mc-opt") : null;
+      if (!btn || btn.disabled) { return; }
+      var li = btn.closest(".mc");
+      var it = QUIZ[+li.getAttribute("data-i")];
+      var k = +btn.getAttribute("data-k");
+      var ok = k === it.a;
+      li.querySelectorAll(".mc-opt").forEach(function (b) {
+        b.disabled = true;
+        if (+b.getAttribute("data-k") === it.a) { b.classList.add("is-ans"); }
+      });
+      btn.classList.add("is-pick");
+      li.classList.add(ok ? "is-right" : "is-wrong");
+      li.querySelector(".mc-fb").innerHTML = '<p><strong>' + (ok ? "答對了！" : "差一點，正確答案是 " + "ABCD"[it.a] + "。") + '</strong>' + esc(it.why) + '</p>';
+      quizDone++; if (ok) { quizScore++; }
+      renderScore();
+    });
+    renderScore();
+  }
 
   /* ---------------------------------------------------------
      4. 運輸鏈節點
@@ -785,6 +877,9 @@
     });
   }
   markPannable();
+  document.querySelectorAll("details.more").forEach(function (d) {
+    d.addEventListener("toggle", function () { markPannable(); sweepReveal(); });
+  });
 
   /* --- 7b. 場景視差（入口與展區 04 的剖面共用同一套深度語言） --- */
   var parallaxTargets = [];
