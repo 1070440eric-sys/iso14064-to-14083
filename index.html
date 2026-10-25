@@ -347,7 +347,7 @@
       <div class="body">
         <p>
           ISO 是國際標準組織，它寫的「標準」就是大家約定的做法。<strong>ISO 14064 是一個溫室氣體標準系列</strong>，
-          負責把溫室氣體（<button class="term" data-term="ghg">GHG</button>）的排放<strong>算出來、寫成報告、再請別人檢查</strong>這三件事。
+          負責把溫室氣體（<button class="term" data-term="ghg">GHG</button>）的排放<strong>算出來並寫成報告</strong>（-1 算公司、-2 算專案），再<strong>請別人檢查</strong>（-3）。
           核心是<strong>三份標準</strong>，各有分工，不是同一份的三個版本：
         </p>
         <ul class="plates">
@@ -382,14 +382,8 @@
         <figure class="fam" id="famMap">
           <div class="svg-pan">
           <svg viewBox="0 0 1000 400" preserveAspectRatio="xMidYMid meet" role="img"
-               aria-label="ISO 14064 家族分工圖：上方 ISO 14064-1 量化組織排放、14064-2 量化專案減量、14064-3 查核聲明，三者以箭號串成算出來到報告到查核的接力；下方兩份虛線卡片 ISO/TS 14064-4 與 ISO 14064-5 是指引，分別指向 14064-1 與 14064-3，不新增要求。">
-            <desc>實線卡片是標準（有要求），虛線卡片是指引（說明怎麼用）。本展主要使用 14064-1。</desc>
-            <text class="fm-cap" x="24" y="34">三份核心標準：先算出來，再寫成報告，最後請人檢查</text>
-            <!-- 接力箭號 -->
-            <g class="fm-flow">
-              <path d="M336 128h52" marker-end="url(#fmArrow)"/>
-              <path d="M666 128h52" marker-end="url(#fmArrow)"/>
-            </g>
+               aria-label="ISO 14064 家族分工圖：左邊 ISO 14064-1 量化組織排放，右邊 ISO 14064-2 量化專案減量，兩者並列，各自產出溫室氣體聲明，再以箭號交給中間的 ISO 14064-3 查證。下方兩份虛線卡片 ISO/TS 14064-4 與 ISO 14064-5 是指引，分別指向 14064-1 與 14064-3，不新增要求。">
+            <desc>實線卡片是標準（有要求），虛線卡片是指引（說明怎麼用）。14064-1 與 14064-2 是並列關係，不是先後步驟。本展主要使用 14064-1。</desc>
             <defs>
               <marker id="fmArrow" viewBox="0 0 10 10" refX="9" refY="5" markerWidth="7" markerHeight="7" orient="auto-start-reverse">
                 <path d="M0 0 10 5 0 10z" fill="var(--ink-soft)"/>
@@ -398,51 +392,57 @@
                 <path d="M0 0 10 5 0 10z" fill="var(--sea)"/>
               </marker>
             </defs>
-            <text class="fm-step" x="362" y="118" text-anchor="middle">報告</text>
-            <text class="fm-step" x="692" y="118" text-anchor="middle">查核</text>
+            <text class="fm-cap" x="24" y="34">三份核心標準：-1 算公司、-2 算專案（兩者並列），算出來的結果都可以交給 -3 查證</text>
 
-            <!-- 三份核心標準 -->
+            <!-- -1、-2 各自產出聲明，往中間交給 -3 -->
+            <g class="fm-flow">
+              <path d="M308 129h42" marker-end="url(#fmArrow)"/>
+              <path d="M692 129h-42" marker-end="url(#fmArrow)"/>
+            </g>
+            <text class="fm-step" x="330" y="116" text-anchor="middle">查證</text>
+            <text class="fm-step" x="670" y="116" text-anchor="middle">查證</text>
+
             <g class="fm-card fm-core" data-core="1">
-              <rect x="24" y="56" width="312" height="146" rx="6"/>
-              <text class="fm-role" x="44" y="86">算自己</text>
+              <rect x="24" y="56" width="280" height="146" rx="6"/>
+              <text class="fm-role" x="44" y="86">算自己（公司）</text>
               <text class="fm-id" x="44" y="116">ISO 14064-1</text>
               <text class="fm-t" x="44" y="146">組織層級的排放與移除，</text>
               <text class="fm-t" x="44" y="168">怎麼量化與報告。</text>
               <text class="fm-s" x="44" y="190">例：食品公司報告全年總排放</text>
             </g>
-            <g class="fm-card fm-core" data-core="2">
-              <rect x="344" y="56" width="312" height="146" rx="6"/>
-              <text class="fm-role" x="364" y="86">算一個專案</text>
-              <text class="fm-id" x="364" y="116">ISO 14064-2</text>
-              <text class="fm-t" x="364" y="146">專案層級的減量或移除，</text>
-              <text class="fm-t" x="364" y="168">怎麼量化、監測與報告。</text>
-              <text class="fm-s" x="364" y="190">例：換鍋爐真的少排了多少</text>
-            </g>
             <g class="fm-card fm-core" data-core="3">
-              <rect x="664" y="56" width="312" height="146" rx="6"/>
-              <text class="fm-role" x="684" y="86">檢查別人說的</text>
-              <text class="fm-id" x="684" y="116">ISO 14064-3</text>
-              <text class="fm-t" x="684" y="146">查證與確證：聲明</text>
-              <text class="fm-t" x="684" y="168">可不可信，怎麼查。</text>
-              <text class="fm-s" x="684" y="190">例：第三方單位查年度報告</text>
+              <rect x="360" y="56" width="280" height="146" rx="6"/>
+              <text class="fm-role" x="380" y="86">檢查別人說的</text>
+              <text class="fm-id" x="380" y="116">ISO 14064-3</text>
+              <text class="fm-t" x="380" y="146">查證與確證：公司或專案</text>
+              <text class="fm-t" x="380" y="168">的聲明可不可信。</text>
+              <text class="fm-s" x="380" y="190">例：第三方單位查年度報告</text>
+            </g>
+            <g class="fm-card fm-core" data-core="2">
+              <rect x="696" y="56" width="280" height="146" rx="6"/>
+              <text class="fm-role" x="716" y="86">算一個專案</text>
+              <text class="fm-id" x="716" y="116">ISO 14064-2</text>
+              <text class="fm-t" x="716" y="146">專案層級的減量或移除，</text>
+              <text class="fm-t" x="716" y="168">怎麼量化、監測與報告。</text>
+              <text class="fm-s" x="716" y="190">例：換鍋爐真的少排了多少</text>
             </g>
 
             <!-- 兩份指引：虛線，指向它們說明的標準 -->
             <g class="fm-guide" data-guide="4" tabindex="0" role="group"
                aria-label="ISO/TS 14064-4:2025 是指引，不新增要求；聚焦後會點亮它說明的 ISO 14064-1">
-              <path class="fm-lead" d="M180 302V212" marker-end="url(#fmArrowH)"/>
-              <rect x="24" y="302" width="452" height="86" rx="6"/>
+              <path class="fm-lead" d="M164 302V212" marker-end="url(#fmArrowH)"/>
+              <rect x="24" y="302" width="440" height="86" rx="6"/>
               <text class="fm-tag" x="44" y="328">指引・不新增要求</text>
               <text class="fm-id2" x="44" y="352">ISO/TS 14064-4:2025</text>
               <text class="fm-s" x="44" y="376">教你怎麼用 14064-1（邊界、排放範疇、不確定性）</text>
             </g>
             <g class="fm-guide" data-guide="5" tabindex="0" role="group"
                aria-label="ISO 14064-5:2026 是指引，不新增要求；聚焦後會點亮它說明的 ISO 14064-3">
-              <path class="fm-lead" d="M820 302V212" marker-end="url(#fmArrowH)"/>
-              <rect x="524" y="302" width="452" height="86" rx="6"/>
-              <text class="fm-tag" x="544" y="328">指引・不新增要求</text>
-              <text class="fm-id2" x="544" y="352">ISO 14064-5:2026</text>
-              <text class="fm-s" x="544" y="376">說明 14064-3 的查核哪些工作可以遠端進行</text>
+              <path class="fm-lead" d="M600 302V212" marker-end="url(#fmArrowH)"/>
+              <rect x="536" y="302" width="440" height="86" rx="6"/>
+              <text class="fm-tag" x="556" y="328">指引・不新增要求</text>
+              <text class="fm-id2" x="556" y="352">ISO 14064-5:2026</text>
+              <text class="fm-s" x="556" y="376">說明 14064-3 的查核哪些工作可以遠端進行</text>
             </g>
           </svg>
           </div>
