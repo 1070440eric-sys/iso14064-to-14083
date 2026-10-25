@@ -1,0 +1,19 @@
+<svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 96 56" role="img" aria-label="黑色沙發團隊標誌">
+  <!-- 原創團隊識別：一張沙發，坐墊縫隙形成一條「運輸鏈」分割 -->
+  <g fill="none" stroke="#14213D" stroke-width="2.4" stroke-linejoin="round" stroke-linecap="round">
+    <!-- 扶手與靠背 -->
+    <path d="M12 22v-6a4 4 0 0 1 4-4h64a4 4 0 0 1 4 4v6"/>
+    <path d="M12 22a5 5 0 0 0-5 5v13h82V27a5 5 0 0 0-5-5"/>
+    <!-- 坐墊：三段，對應三個 TCE -->
+    <path d="M18 27h20v13H18zM38 27h20v13H38zM58 27h20v13H58z"/>
+    <!-- 椅腳 -->
+    <path d="M16 45v6M80 45v6"/>
+  </g>
+  <!-- 坐墊下方的鏈結標記：把沙發坐墊當成運輸鏈元素 -->
+  <g fill="#E2622A">
+    <circle cx="28" cy="33.5" r="2.1"/>
+    <circle cx="48" cy="33.5" r="2.1"/>
+    <circle cx="68" cy="33.5" r="2.1"/>
+  </g>
+  <path d="M28 33.5h40" stroke="#4FA3A8" stroke-width="1.6" stroke-dasharray="4 4" opacity=".85"/>
+</svg>

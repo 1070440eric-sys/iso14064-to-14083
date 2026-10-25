@@ -1,0 +1,16 @@
+<svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 64 64" role="img" aria-label="642拾4，83也是2拾4 作品標誌">
+  <!-- 原創標誌：一節貨櫃沿「公路→鐵路」路線前進，左半 64、右半 83 -->
+  <rect width="64" height="64" rx="7" fill="#14213D"/>
+  <!-- 路線：公路段（實線）＋鐵路段（虛線） -->
+  <path d="M8 44h20" stroke="#C89B57" stroke-width="3" stroke-linecap="round"/>
+  <path d="M36 44h20" stroke="#4FA3A8" stroke-width="3" stroke-linecap="round" stroke-dasharray="6 5"/>
+  <!-- 轉運節點 -->
+  <rect x="28.5" y="40.5" width="7" height="7" rx="1.5" fill="#B07CD1" transform="rotate(45 32 44)"/>
+  <!-- 貨櫃 -->
+  <rect x="24" y="20" width="16" height="12" rx="1.5" fill="none" stroke="#F5F2EC" stroke-width="2.2"/>
+  <path d="M28 20v12M32 20v12M36 20v12" stroke="#F5F2EC" stroke-width="1.1" opacity=".65"/>
+  <!-- 數字 -->
+  <text x="12" y="18" font-family="ui-monospace,SFMono-Regular,Consolas,monospace" font-size="13" font-weight="700" fill="#E2622A">64</text>
+  <text x="40" y="18" font-family="ui-monospace,SFMono-Regular,Consolas,monospace" font-size="13" font-weight="700" fill="#4FA3A8">83</text>
+  <text x="32" y="59" text-anchor="middle" font-family="ui-monospace,SFMono-Regular,Consolas,monospace" font-size="8" letter-spacing="1.2" fill="#8C93A6">TC → TCE</text>
+</svg>
