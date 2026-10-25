@@ -891,3 +891,7 @@ figcaption details.more{background:transparent}
 }
 
 .db-ctrl .btn{white-space:nowrap}
+
+/* 摺疊框內的圖不要往側欄凸出 */
+details.more .fam,details.more .chain-run{margin-left:0!important}
+@media (min-width:1001px){details.more .fam svg,details.more .chain-run svg{min-width:0}}
