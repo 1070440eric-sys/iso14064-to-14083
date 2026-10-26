@@ -1427,6 +1427,48 @@
   var heroTicks = Array.prototype.slice.call(document.querySelectorAll(".hp-ticks i"));
   var heroScrubQueued = false;
 
+  /* 手機捲動時網址列會伸縮，觸發 resize、innerHeight 也跟著變。
+     節拍卡的停留高度若跟著重算，舞台下方整頁內容會一次位移好幾百 px，
+     看起來就像頁面自己往上飄。所以只有寬度改變（轉向、視窗拉寬）才更新排版用的高度。 */
+  var layoutVh = 0, layoutVw = 0;
+  function stableVh() {
+    var w = window.innerWidth || 0;
+    if (!layoutVh || w !== layoutVw) {
+      layoutVw = w;
+      layoutVh = window.innerHeight || document.documentElement.clientHeight;
+    }
+    return layoutVh;
+  }
+
+  /* 行動版吸頂時舞台會收掉講讀文字而變矮。舞台在文件流裡，
+     變矮會把下面所有內容往上拉（約 300 px）。把少掉的高度補在節拍卡上方的間距，
+     畫面上舞台照樣變矮，但版面位置不動。
+     （不補在舞台自己的 margin：那會縮短吸頂停留的距離，舞台會比總結卡先捲走。） */
+  var pinLost = 0, pinnedH = 0;
+  var stepsGap = heroStepsEl ? (parseFloat(getComputedStyle(heroStepsEl).marginTop) || 0) : 0;
+  function applyPinned(on) {
+    heroPin.classList.toggle("is-pinned", on);
+    if (heroStepsEl) { heroStepsEl.style.marginTop = on && pinLost ? (stepsGap + pinLost) + "px" : ""; }
+    markPannable();   /* 「可滑動」提示會改變插畫的內距，要在同一個畫格內更新，否則還會再跳一次 */
+  }
+  /* 量出吸頂前後的高度差（版面寬度改變時要重量） */
+  function measurePin() {
+    if (!heroPin) { return; }
+    var was = heroPin.classList.contains("is-pinned");
+    heroPin.classList.remove("is-pinned");
+    markPannable();
+    var full = heroPin.offsetHeight;
+    heroPin.classList.add("is-pinned");
+    markPannable();
+    pinnedH = heroPin.offsetHeight;
+    pinLost = Math.max(0, full - pinnedH);
+    applyPinned(was);
+  }
+  function setPinned(on) {
+    if (!heroPin || heroPin.classList.contains("is-pinned") === on) { return; }
+    applyPinned(on);
+  }
+
   /* 節拍卡採「吸頂堆疊」：卡片停在吸頂舞台正下方，下一張從下面推上來換代。
      停留的捲動距離＝該段動畫的行程，所以讀到哪張卡剛好等於演到哪一段；
      卡片全程完整可見，也不會出現空白等待區。 */
@@ -1434,17 +1476,13 @@
   var heroReadTop = 120;
 
   function heroPinHeight() {
-   if (!heroPin) { return 0; }
-   var wasPinned = heroPin.classList.contains("is-pinned");
-   heroPin.classList.add("is-pinned");
-   var h = heroPin.offsetHeight;
-   if (!wasPinned) { heroPin.classList.remove("is-pinned"); }
-   return h;
+   return heroPin ? pinnedH : 0;
   }
 
   function heroLayout() {
    if (!heroPin || !heroStepEls.length) { return; }
-   var vh = window.innerHeight || document.documentElement.clientHeight;
+   var vh = stableVh();
+   measurePin();
    var stickyTop = parseFloat(getComputedStyle(heroPin).top) || 0;
    heroReadTop = stickyTop + heroPinHeight() + heroReadPad;
    /* 每張卡停留的距離＝一屏閱讀區的高度，下一張卡才會剛好把它推走 */
@@ -1481,7 +1519,7 @@
      用類別區分，頁面頂部才能看到完整舞台。 */
   if (heroPin) {
     var stuck = heroPin.getBoundingClientRect().top <= (parseFloat(getComputedStyle(heroPin).top) || 0) + 0.5;
-    if (heroPin.classList.contains("is-pinned") !== stuck) { heroPin.classList.toggle("is-pinned", stuck); }
+    if (heroPin.classList.contains("is-pinned") !== stuck) { setPinned(stuck); }
     /* 講讀文字換行、或吸頂後收掉文字，都會改變吸頂區高度：
        閱讀線要跟著更新，否則卡片會被舞台蓋住一小條。 */
     var wantTop = (parseFloat(getComputedStyle(heroPin).top) || 0) + heroPin.offsetHeight + heroReadPad;
