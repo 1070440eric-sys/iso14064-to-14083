@@ -1835,4 +1835,21 @@
   if (document.fonts && document.fonts.ready) {
     document.fonts.ready.then(function () { heroLayout(); heroScrub(); });
   }
+
+  /* 給吉祥物的搜尋功能用：術語資料、開術語說明、跳到案例的某一步 */
+  window.ISO_SITE = {
+    gloss: GLOSS,
+    cases: CASES,
+    openTerm: openDrawer,
+    showCaseStep: function (key, i) {
+      if (!panel || !CASES[key]) { return null; }
+      if (curCase !== key) {
+        var tab = document.querySelector('.case-tab[data-case="' + key + '"]');
+        if (tab) { tab.click(); }
+      }
+      curStep = Math.max(0, Math.min(CASES[key].steps.length - 1, i));
+      renderStep();
+      return panel;
+    }
+  };
 })();

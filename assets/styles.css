@@ -911,7 +911,38 @@ figcaption details.more{background:transparent}
   .tan-shadow{width:59px;height:8px}
   .tan-bubble{font-size:14px}
 }
-@media (prefers-reduced-motion:reduce){.tan-idle,.tan-eye{animation:none}.tan-arm{transition:none}}
+.tan-acts .tan-find{color:var(--paper);background:var(--ink);border-color:var(--ink)}
+.tan-acts .tan-find:hover{color:var(--paper);background:var(--signal);border-color:var(--signal)}
+/* 搜尋面板：固定在畫面上方，手機鍵盤跳出來時也看得到 */
+.tan-search{position:fixed;z-index:55;top:max(10px,env(safe-area-inset-top,0px));left:50%;transform:translateX(-50%);
+  width:min(480px,calc(100vw - 20px));max-height:min(78vh,620px);display:flex;flex-direction:column;gap:8px;
+  background:#fff;color:var(--ink);border:1px solid var(--rule);border-top:4px solid var(--signal);border-radius:var(--radius);
+  padding:12px 14px 10px;box-shadow:0 18px 40px -18px rgba(20,33,61,.6)}
+.tan-search[hidden]{display:none}
+.tan-s-head{display:flex;align-items:center;justify-content:space-between;gap:8px}
+.tan-s-title{margin:0;font-family:var(--serif);font-weight:700;font-size:17px}
+.tan-s-close{font:inherit;font-size:13px;background:var(--paper);border:1px solid var(--rule);border-radius:var(--radius);padding:2px 9px;cursor:pointer;color:var(--ink-soft)}
+.tan-search input{font:inherit;font-size:16px;width:100%;padding:9px 12px;border:1px solid var(--ink-soft);border-radius:var(--radius);background:var(--paper);color:var(--ink)}
+.tan-search input:focus{outline:2px solid var(--signal);outline-offset:1px}
+.tan-s-note{margin:0;font-size:13px;color:var(--muted);line-height:1.6}
+.tan-chips{display:flex;flex-wrap:wrap;gap:6px;margin-top:6px}
+.tan-chips button{font:inherit;font-size:13px;border:1px solid var(--rule);background:var(--paper);color:var(--ink);border-radius:999px;padding:2px 11px;cursor:pointer}
+.tan-chips button:hover{border-color:var(--signal);color:var(--signal)}
+.tan-results{list-style:none;margin:0;padding:0;overflow-y:auto;overscroll-behavior:contain;display:grid;gap:4px;min-height:0}
+.tan-results button{font:inherit;text-align:left;width:100%;display:grid;gap:2px;padding:8px 10px;border:1px solid var(--rule-soft);border-radius:var(--radius);background:#fff;color:var(--ink);cursor:pointer}
+.tan-results button:hover,.tan-results button:focus-visible{border-color:var(--signal);background:var(--signal-soft);outline:none}
+.tan-r-meta{font-family:var(--mono);font-size:11px;letter-spacing:.06em;color:var(--signal)}
+.tan-r-title{font-weight:700;font-size:15px;line-height:1.5}
+.tan-r-text{font-size:13.5px;line-height:1.6;color:var(--ink-soft)}
+.tan-results mark,.tan-s-note mark{background:#F6D9A8;color:inherit;padding:0 1px;border-radius:2px}
+.tan-s-tip{margin:0;font-size:12px;color:var(--muted)}
+.tan-s-tip kbd{font-family:var(--mono);font-size:11px;border:1px solid var(--rule);border-bottom-width:2px;border-radius:3px;padding:0 4px;background:var(--paper)}
+@media (hover:none){.tan-s-tip{display:none}}
+/* 跳到的位置閃一下，讓眼睛找得到 */
+@keyframes tanHit{0%,60%{background:rgba(246,217,168,.75);box-shadow:0 0 0 6px rgba(246,217,168,.75)}100%{background:transparent;box-shadow:0 0 0 6px transparent}}
+.tan-hit{animation:tanHit 2.4s ease-out;border-radius:3px}
+.tan-hit:focus{outline:none}
+@media (prefers-reduced-motion:reduce){.tan-idle,.tan-eye,.tan-hit{animation:none}.tan-hit{background:rgba(246,217,168,.75)}.tan-arm{transition:none}}
 
 /* ---------- reduced motion ---------- */
 @media (prefers-reduced-motion:reduce){
@@ -924,7 +955,7 @@ figcaption details.more{background:transparent}
 }
 
 @media print{
-  .tan,.tan-show,#tanLive{display:none!important}
+  .tan,.tan-show,#tanLive,.tan-search{display:none!important}
   .topbar,aside.rail,.skip,.player-nav,.drawer{display:none!important}
   body{background:#fff}
   .exhibit{page-break-inside:avoid}

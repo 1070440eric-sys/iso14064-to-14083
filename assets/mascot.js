@@ -27,7 +27,7 @@
 
   /* ---------- 台詞（數字都對得上網站內容） ---------- */
   var LINES = {
-    route: ["嗨，我是碳碳！往下捲，貨櫃會往前跑，我也會跟著<strong>排放量</strong>變胖。",
+    route: ["嗨，我是碳碳！往下捲，貨櫃會往前跑，我也會跟著<strong>排放量</strong>變胖。想找什麼詞，按下面的「找關鍵字」。",
             "上排長條是距離、下排是排放。最短的那段公路，反而排最多。"],
     s1: ["ISO 14064 不是一本，是一個<strong>家族</strong>。先認識 -1、-2、-3 各管什麼。",
          "-1 算組織、-2 算減量專案，兩個算出來的結果，再交給 -3 查證。"],
@@ -267,7 +267,7 @@
     clearTimeout(secTimer);
     // 停在這一區一下子才開口，快速捲過去就不吵
     secTimer = setTimeout(function () {
-      if (curSec !== s || spoken[s] || root.classList.contains("is-away")) { return; }
+      if (curSec !== s || spoken[s] || root.classList.contains("is-away") || Date.now() < quietUntil) { return; }
       spoken[s] = true; lineIdx[s] = 0;
       say(LINES[s][0]);
     }, 900);
@@ -320,6 +320,228 @@
       if (li.classList.contains("is-right")) { say("答對了！"); }
       else if (li.classList.contains("is-wrong")) { say("差一點，看一下下面的解說再往下。"); }
     }, 0);
+  });
+
+  /* =========================================================
+     搜尋：輸入關鍵字，碳碳帶你到網站裡的那個地方
+     ========================================================= */
+  var sPanel = document.getElementById("tanSearch");
+  var sInput = document.getElementById("tanQ");
+  var sList = document.getElementById("tanResults");
+  var sNote = document.getElementById("tanSNote");
+  var sClose = document.getElementById("tanSClose");
+  var findBtn = document.getElementById("tanFind");
+  var INDEX = null, quietUntil = 0, sResults = [];
+
+  function norm(t) { return String(t || "").normalize ? String(t || "").normalize("NFKC").toLowerCase() : String(t || "").toLowerCase(); }
+  function clean(t) { return String(t || "").replace(/<[^>]+>/g, "").replace(/\s+/g, " ").trim(); }
+  function escHtml(t) { return String(t).replace(/[&<>"]/g, function (c) { return { "&": "&amp;", "<": "&lt;", ">": "&gt;", '"': "&quot;" }[c]; }); }
+
+  // 展區名稱：沿用左側導覽的編號與名稱
+  var SEC_NAME = {};
+  Array.prototype.forEach.call(document.querySelectorAll(".rail-list a"), function (a) {
+    var id = (a.getAttribute("href") || "").replace("#", "");
+    var no = a.querySelector("i") ? a.querySelector("i").textContent : "";
+    SEC_NAME[id] = (no ? no + " " : "") + a.textContent.replace(no, "").trim();
+  });
+  function secOf(node) {
+    var s = node && node.closest ? node.closest("section[id]") : null;
+    return s ? (SEC_NAME[s.id] || "") : "";
+  }
+
+  function buildIndex() {
+    var list = [], seen = {};
+    function add(o) {
+      var key = o.kind + "|" + o.title + "|" + o.text;
+      if (seen[key]) { return; }
+      seen[key] = 1;
+      o.hay = norm(o.title + " " + o.text);
+      o.tnorm = norm(o.title);
+      list.push(o);
+    }
+    var main = document.getElementById("main") || document.body;
+    var SKIP = "#glossList, #playerPanel, .sr, noscript, svg, .mc-fb, .drawer, .tan";
+    // 1. 標題
+    Array.prototype.forEach.call(main.querySelectorAll("h2, h3, h4, summary"), function (h) {
+      if (h.closest(SKIP)) { return; }
+      var t = clean(h.textContent);
+      if (t) { add({ kind: "標題", w: 3, title: t, text: "", sec: secOf(h), el: h }); }
+    });
+    // 2. 術語（打開術語說明）
+    var site = window.ISO_SITE || {};
+    (site.gloss || []).forEach(function (t) {
+      add({ kind: "術語", w: 3, title: t.zh + (t.abbr ? "（" + t.abbr + "）" : ""), text: t.en + "　" + t.plain + " " + (t.eg || ""),
+        sec: SEC_NAME.glossary || "術語", term: t.id });
+    });
+    // 3. 案例的每一步（切到那一步）
+    var cases = site.cases || {};
+    Object.keys(cases).forEach(function (k) {
+      (cases[k].steps || []).forEach(function (st, i) {
+        add({ kind: "案例步驟", w: 2, title: "案例 " + k.toUpperCase() + "｜" + clean(st.h), text: clean(st.p) + " " + clean(st.extra),
+          sec: SEC_NAME["case"] || "案例", caseKey: k, step: i });
+      });
+    });
+    // 4. 內文段落
+    Array.prototype.forEach.call(main.querySelectorAll("p, li, dt, dd, figcaption, td, th, .mc-q"), function (el) {
+      if (el.closest(SKIP)) { return; }
+      if (el.tagName === "LI" && el.querySelector("p, li, ul, ol")) { return; }   // 外層清單交給裡面的段落
+      var t = clean(el.textContent);
+      if (t.length < 4) { return; }
+      add({ kind: "內文", w: 1, title: "", text: t, sec: secOf(el), el: el });
+    });
+    // 5. 互動元件上的文字（試算的運具選項、運輸鏈的節點等）；測驗選項不收，免得直接看到答案
+    Array.prototype.forEach.call(main.querySelectorAll("button, label, legend"), function (el) {
+      if (el.closest(SKIP) || el.closest(".mc-opt, [data-term], .quiz-btn")) { return; }
+      var t = clean(el.innerText || el.textContent);   // innerText 會在按鈕內的小標之間留空白
+      if (t.length < 2) { return; }
+      add({ kind: "互動", w: 1, title: t.length <= 24 ? t : "", text: t.length > 24 ? t : "", sec: secOf(el), el: el });
+    });
+    return list;
+  }
+
+  function search(q) {
+    var words = norm(q).split(/\s+/).filter(Boolean);
+    if (!words.length) { return []; }
+    var out = [];
+    INDEX.forEach(function (o, n) {
+      for (var i = 0; i < words.length; i++) { if (o.hay.indexOf(words[i]) < 0) { return; } }
+      var score = o.w * 10;
+      if (o.tnorm && o.tnorm.indexOf(words[0]) >= 0) { score += 8; }
+      if (o.tnorm === words.join(" ")) { score += 6; }
+      score -= o.hay.indexOf(words[0]) / 400;                       // 越早出現越前面
+      out.push({ o: o, score: score, n: n });
+    });
+    out.sort(function (a, b) { return b.score - a.score || a.n - b.n; });
+    return out.slice(0, 8).map(function (r) { return r.o; });
+  }
+
+  function snippet(text, word) {
+    var t = clean(text);
+    if (!t) { return ""; }
+    var i = norm(t).indexOf(word);
+    if (i < 0) { return escHtml(t.length > 70 ? t.slice(0, 70) + "…" : t); }
+    var a = Math.max(0, i - 22), b = Math.min(t.length, i + word.length + 40);
+    return (a > 0 ? "…" : "") + escHtml(t.slice(a, i)) + "<mark>" + escHtml(t.slice(i, i + word.length)) + "</mark>" +
+      escHtml(t.slice(i + word.length, b)) + (b < t.length ? "…" : "");
+  }
+
+  var SUGGEST = ["TCE", "類別 3", "轉運", "全程卡車", "分配", "tkm", "14064-3"];
+  function showSuggest(msg) {
+    sNote.innerHTML = msg + '<span class="tan-chips">' + SUGGEST.map(function (w) {
+      return '<button type="button" data-q="' + escHtml(w) + '">' + escHtml(w) + "</button>";
+    }).join("") + "</span>";
+  }
+  function renderResults() {
+    var q = sInput.value.trim();
+    sList.innerHTML = "";
+    if (!q) { sResults = []; showSuggest("試試看這些詞："); return; }
+    sResults = search(q);
+    if (!sResults.length) { showSuggest("找不到「" + escHtml(q) + "」。換個說法，或試試："); return; }
+    sNote.textContent = "找到 " + sResults.length + " 個地方" + (sResults.length === 8 ? "（只列前 8 個）" : "") + "，點一下帶你過去";
+    var w0 = norm(q).split(/\s+/)[0];
+    sResults.forEach(function (o, i) {
+      var li = document.createElement("li");
+      var b = document.createElement("button");
+      b.type = "button"; b.setAttribute("data-i", i);
+      var head = o.title ? snippet(o.title, w0) : "";
+      var body = o.kind === "內文" ? snippet(o.text, w0) : (o.text ? snippet(o.text, w0) : "");
+      b.innerHTML = '<span class="tan-r-meta">' + escHtml(o.sec || "") + "・" + o.kind + "</span>" +
+        (head ? '<span class="tan-r-title">' + head + "</span>" : "") +
+        (body && o.kind !== "標題" ? '<span class="tan-r-text">' + body + "</span>" : "");
+      li.appendChild(b);
+      sList.appendChild(li);
+    });
+  }
+
+  function openSearch(q) {
+    if (!INDEX) { INDEX = buildIndex(); }
+    hideBubble();
+    sPanel.hidden = false;
+    if (typeof q === "string") { sInput.value = q; }
+    renderResults();
+    sInput.focus();
+    sInput.select();
+  }
+  function closeSearch(back) {
+    if (sPanel.hidden) { return; }
+    sPanel.hidden = true;
+    if (back !== false && !root.classList.contains("is-away")) { el.focus({ preventScroll: true }); }
+  }
+
+  function visibleTarget(node) {
+    // 打開所在的摺疊區塊；若元素本身看不到（例如被隱藏），退到最近看得到的外層
+    for (var d = node; d; d = d.parentElement) { if (d.tagName === "DETAILS") { d.open = true; } }
+    var t = node;
+    while (t && t !== document.body && !(t.offsetWidth || t.offsetHeight || t.getClientRects().length)) { t = t.parentElement; }
+    return t || node;
+  }
+  function jumpTo(o) {
+    closeSearch(false);
+    var site = window.ISO_SITE || {};
+    if (o.term && site.openTerm) {
+      site.openTerm(o.term);
+      say("這是「" + escHtml(o.title) + "」的說明，看完按關閉就回來了。");
+      return;
+    }
+    var target = o.el;
+    if (o.caseKey && site.showCaseStep) { target = site.showCaseStep(o.caseKey, o.step); }
+    if (!target) { return; }
+    target = visibleTarget(target);
+    var bar = document.querySelector(".topbar");
+    var off = (bar ? bar.getBoundingClientRect().height : 0) + 24;
+    var top = target.getBoundingClientRect().top + window.pageYOffset - off;
+    // 跳轉途中經過的展區不要搶著講話，目的地那區也算講過了
+    quietUntil = Date.now() + 2500;
+    var dest = target.closest ? target.closest("section[id]") : null;
+    if (dest) { spoken[dest.id] = true; }
+    window.scrollTo({ top: Math.max(0, top), behavior: reduce() ? "auto" : "smooth" });
+    clearTimeout(target._tanHitT);
+    target.classList.remove("tan-hit"); void target.offsetWidth; target.classList.add("tan-hit");
+    target._tanHitT = setTimeout(function () { target.classList.remove("tan-hit"); }, 2600);
+    if (!target.hasAttribute("tabindex") && !/^(A|BUTTON|INPUT|SELECT|TEXTAREA|SUMMARY)$/.test(target.tagName)) { target.setAttribute("tabindex", "-1"); }
+    try { target.focus({ preventScroll: true }); } catch (err) {}
+    setTimeout(function () {
+      if (!root.classList.contains("is-away")) { say("到了！這段在「" + escHtml(o.sec || "這裡") + "」。"); }
+    }, reduce() ? 0 : 700);
+  }
+
+  sInput.addEventListener("input", renderResults);
+  sInput.addEventListener("keydown", function (e) {
+    if (e.key === "Enter") { e.preventDefault(); if (sResults[0]) { jumpTo(sResults[0]); } }
+    if (e.key === "ArrowDown") { e.preventDefault(); var f = sList.querySelector("button"); if (f) { f.focus(); } }
+  });
+  sList.addEventListener("click", function (e) {
+    var b = e.target.closest ? e.target.closest("button[data-i]") : null;
+    if (b) { jumpTo(sResults[+b.getAttribute("data-i")]); }
+  });
+  sList.addEventListener("keydown", function (e) {
+    var b = e.target.closest ? e.target.closest("button[data-i]") : null;
+    if (!b) { return; }
+    var li = b.parentElement;
+    if (e.key === "ArrowDown" && li.nextElementSibling) { e.preventDefault(); li.nextElementSibling.querySelector("button").focus(); }
+    if (e.key === "ArrowUp") { e.preventDefault(); if (li.previousElementSibling) { li.previousElementSibling.querySelector("button").focus(); } else { sInput.focus(); } }
+  });
+  sNote.addEventListener("click", function (e) {
+    var b = e.target.closest ? e.target.closest("button[data-q]") : null;
+    if (b) { sInput.value = b.getAttribute("data-q"); renderResults(); sInput.focus(); }
+  });
+  sClose.addEventListener("click", function () { closeSearch(); });
+  sPanel.addEventListener("keydown", function (e) { if (e.key === "Escape") { e.preventDefault(); closeSearch(); } });
+  findBtn.addEventListener("click", function () { openSearch(); });
+  // 按 / 也能打開搜尋（正在打字或術語說明開著時不搶）
+  document.addEventListener("keydown", function (e) {
+    if (e.key !== "/" || e.ctrlKey || e.metaKey || e.altKey) { return; }
+    var a = document.activeElement, tag = a ? a.tagName : "";
+    if (/^(INPUT|TEXTAREA|SELECT)$/.test(tag) || (a && a.isContentEditable)) { return; }
+    var dr = document.getElementById("drawer");
+    if (dr && !dr.hidden) { return; }
+    e.preventDefault();
+    openSearch();
+  });
+  // 點面板外面就收起
+  document.addEventListener("pointerdown", function (e) {
+    if (sPanel.hidden || sPanel.contains(e.target) || (findBtn.contains && findBtn.contains(e.target))) { return; }
+    closeSearch(false);
   });
 
   /* ---------- 啟動 ---------- */
