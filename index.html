@@ -6,7 +6,7 @@
 <title>從 ISO 14064 到 ISO 14083｜一趟看得懂的運輸鏈碳排展</title>
 <meta name="description" content="一個給零基礎讀者的互動式科普網站：從企業熟悉的 ISO 14064-1 溫室氣體盤查，一步步理解 ISO 14083 如何量化貨運與客運運輸鏈的排放。">
 <link rel="icon" type="image/svg+xml" href="./assets/img/logo-mark.svg">
-<link rel="stylesheet" href="./assets/styles.css?v=20261026a">
+<link rel="stylesheet" href="./assets/styles.css?v=20261028a">
 <script>document.documentElement.className = document.documentElement.className.replace("no-js", "js");</script>
 </head>
 <body>
@@ -1499,6 +1499,39 @@
   </div>
 </div>
 
-<script src="./assets/app.js?v=20261026a"></script>
+<!-- 吉祥物「碳碳」：沒有 JS 時不出現 -->
+<div class="tan" id="tan" hidden>
+  <div class="tan-shadow" id="tanShadow"></div>
+  <div class="tan-body" id="tanBody" tabindex="0" role="button" aria-label="碳碳，導覽吉祥物。按 Enter 讓它說話，方向鍵可以移動">
+    <svg viewBox="0 0 200 200" aria-hidden="true" focusable="false">
+      <g class="tan-idle"><g class="grow">
+        <ellipse cx="80" cy="168" rx="10" ry="6" fill="#3C4A66"/><ellipse cx="120" cy="168" rx="10" ry="6" fill="#3C4A66"/>
+        <ellipse class="tan-arm tan-arm-l" cx="36" cy="126" rx="12" ry="7" fill="#C4CEDB"/>
+        <ellipse class="tan-arm tan-arm-r" cx="164" cy="126" rx="12" ry="7" fill="#C4CEDB"/>
+        <g fill="#DCE3EC"><circle cx="72" cy="108" r="32"/><circle cx="106" cy="90" r="38"/><circle cx="138" cy="112" r="28"/><rect x="44" y="108" width="122" height="56" rx="28"/></g>
+        <g class="tan-face-rest">
+          <circle class="tan-eye" cx="88" cy="118" r="6" fill="#14213D"/><circle class="tan-eye" cx="122" cy="118" r="6" fill="#14213D"/>
+          <path d="M98 130 Q105 136 112 130" stroke="#14213D" stroke-width="3" fill="none" stroke-linecap="round"/>
+        </g>
+        <g class="tan-face-held">
+          <path d="M82 112 L94 124 M94 112 L82 124 M116 112 L128 124 M128 112 L116 124" stroke="#14213D" stroke-width="3.5" stroke-linecap="round"/>
+          <ellipse cx="105" cy="134" rx="5" ry="6" fill="#14213D"/>
+        </g>
+        <circle cx="76" cy="130" r="6" fill="#F3B8A0" opacity=".8"/><circle cx="134" cy="130" r="6" fill="#F3B8A0" opacity=".8"/>
+        <rect x="84" y="142" width="42" height="16" rx="8" fill="#C2410C"/>
+        <text x="105" y="154" text-anchor="middle" font-family="SFMono-Regular,Consolas,monospace" font-size="10.5" font-weight="700" fill="#fff">CO₂e</text>
+      </g></g>
+    </svg>
+  </div>
+  <div class="tan-bubble" id="tanBubble" hidden>
+    <p id="tanText"></p>
+    <div class="tan-acts"><button type="button" id="tanHide">收起碳碳</button><button type="button" id="tanClose" aria-label="關閉對話">✕</button></div>
+  </div>
+</div>
+<p class="sr" id="tanLive" aria-live="polite"></p>
+<button type="button" class="tan-show" id="tanShow" hidden aria-label="叫出導覽吉祥物碳碳">碳碳</button>
+
+<script src="./assets/app.js?v=20261028a"></script>
+<script src="./assets/mascot.js?v=20261028a"></script>
 </body>
 </html>
