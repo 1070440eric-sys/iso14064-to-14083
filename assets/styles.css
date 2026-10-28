@@ -900,8 +900,9 @@ figcaption details.more{background:transparent}
 .tan-idle{animation:tanBob 2.6s ease-in-out infinite}
 .tan-eye{animation:tanBlink 4.2s infinite;transform-box:fill-box;transform-origin:center}
 .tan-face-held{display:none}
-.held .tan-face-held,.squished .tan-face-held{display:inline}
-.held .tan-face-rest,.squished .tan-face-rest{display:none}
+/* 平常拖著走維持笑臉；只有被劇烈甩動（dizzy）或貼著邊框壓扁（squished）才變 X X 眼 */
+.dizzy .tan-face-held,.squished .tan-face-held{display:inline}
+.dizzy .tan-face-rest,.squished .tan-face-rest,.dizzy .tan-face-sleep,.squished .tan-face-sleep{display:none}
 .held .tan-idle,.held .tan-eye{animation:none}
 /* 閒置提醒：揮手＋跳一跳；睡著：閉眼、冒 Z */
 .tan-face-sleep{display:none}

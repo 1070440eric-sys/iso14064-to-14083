@@ -106,6 +106,7 @@
     el.style.transform = "translate(" + (x + px).toFixed(1) + "px," + (y + py).toFixed(1) + "px) rotate(" + rot.toFixed(2) + "deg) scale(" +
       sx.toFixed(3) + "," + sy.toFixed(3) + ") translate(" + (-px).toFixed(1) + "px," + (-py).toFixed(1) + "px)";
     el.classList.toggle("squished", ax > 0.12 || ay > 0.12);
+    el.classList.toggle("dizzy", Date.now() < dizzyUntil);
     var s = held ? 0.7 : 1;
     shadow.style.transform = "translate(" + (x + size / 2 - size * 0.32).toFixed(1) + "px," + (y + e.b - size * 0.04 + (held ? 10 : 0)).toFixed(1) + "px) scale(" + (s * (1 + ay * 0.6)).toFixed(2) + "," + s + ")";
     shadow.style.opacity = held ? 0.5 : 1;
@@ -118,8 +119,9 @@
     if (amt < 0.03) { return; }
     if (axis === "x") { wx = side; vkx += amt * 0.6; } else { wy = side; vky += amt * 0.6; }
   }
+  var shake = 0, pvx = 0, pvy = 0, dizzyUntil = 0, SHAKE_DIZZY = 90;
   function settled() {
-    return !held && Math.abs(vx) < .05 && Math.abs(vy) < .05 && Math.abs(rot) < .1 && Math.abs(vr) < .1 &&
+    return !held && Date.now() >= dizzyUntil && Math.abs(vx) < .05 && Math.abs(vy) < .05 && Math.abs(rot) < .1 && Math.abs(vr) < .1 &&
       Math.abs(sq) < .002 && Math.abs(vsq) < .002 && !kx && !ky && Math.abs(growScale - growTarget) < .002;
   }
   function tick() {
@@ -160,7 +162,7 @@
   /* ---------- 拖曳 ---------- */
   el.addEventListener("pointerdown", function (e) {
     if (e.button !== undefined && e.button !== 0) { return; }
-    held = true; moved = false; pushX = pushY = 0;
+    held = true; moved = false; pushX = pushY = 0; shake = 0; pvx = pvy = 0;
     try { el.setPointerCapture(e.pointerId); } catch (err) {}
     el.classList.add("held");
     var r = stage.getBoundingClientRect();
@@ -177,6 +179,10 @@
     var dvx = (e.clientX - lastX) / dt * 16, dvy = (e.clientY - lastY) / dt * 16;
     vx = Math.max(-36, Math.min(36, dvx)); vy = Math.max(-36, Math.min(36, dvy));
     lastX = e.clientX; lastY = e.clientY; lastT = now;
+    // 甩動程度：速度「變化」的累積（來回甩才會累積，平順地拖或一路直線拉不會）
+    shake = shake * 0.8 + Math.sqrt((dvx - pvx) * (dvx - pvx) + (dvy - pvy) * (dvy - pvy));
+    pvx = dvx; pvy = dvy;
+    if (shake > SHAKE_DIZZY) { dizzyUntil = Date.now() + 900; }
     var rawX = e.clientX - r.left - ox, rawY = e.clientY - r.top - oy;
     x = rawX; y = rawY;
     clampPos();
@@ -290,7 +296,10 @@
     var t = 1;
     if (curSec === "route") { t = scaleFor(num(heroTotal)); }
     else if (onScreen(sandbox)) { t = scaleFor(num(sbTotal)); }   // 只有試算工具在畫面上時才跟著它的數字
-    if (Math.abs(t - growTarget) > 0.002) { growTarget = t; vsq = 0.12; kick(); }
+    if (Math.abs(t - growTarget) > 0.002) {
+      if (Math.abs(t - growTarget) > 0.08) { vsq = 0.12; }   // 一次變很多才彈一下；捲動時的連續變化只慢慢長大
+      growTarget = t; kick();
+    }
   }
   function watch(node, fn) {
     if (!node || !window.MutationObserver) { return; }
