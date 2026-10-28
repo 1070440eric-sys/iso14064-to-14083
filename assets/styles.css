@@ -903,6 +903,17 @@ figcaption details.more{background:transparent}
 .held .tan-face-held,.squished .tan-face-held{display:inline}
 .held .tan-face-rest,.squished .tan-face-rest{display:none}
 .held .tan-idle,.held .tan-eye{animation:none}
+/* 閒置提醒：揮手＋跳一跳；睡著：閉眼、冒 Z */
+.tan-face-sleep{display:none}
+.sleeping .tan-face-sleep{display:inline}
+.sleeping .tan-face-rest{display:none}
+.sleeping .tan-idle{animation-duration:4.5s}
+@keyframes tanWave{0%,100%{transform:rotate(0)}25%{transform:rotate(-55deg)}75%{transform:rotate(-20deg)}}
+@keyframes tanHop{0%,100%{transform:translateY(0)}30%{transform:translateY(-14px)}55%{transform:translateY(0)}70%{transform:translateY(-6px)}}
+@keyframes tanZ{0%{opacity:0;transform:translateY(6px)}30%,80%{opacity:1}100%{opacity:0;transform:translateY(-8px)}}
+.waving .tan-arm-r{animation:tanWave .7s ease-in-out infinite;transform-origin:0 50%}
+.waving svg{animation:tanHop 1.1s ease-in-out 3}
+.tan-zzz{animation:tanZ 2.4s ease-in-out infinite;transform-box:fill-box}
 .tan-arm{transform-box:fill-box;transition:transform .2s ease}
 .tan-arm-l{transform-origin:100% 50%}.tan-arm-r{transform-origin:0 50%}
 .held .tan-arm-l{transform:rotate(-38deg)}.held .tan-arm-r{transform:rotate(38deg)}
@@ -942,7 +953,7 @@ figcaption details.more{background:transparent}
 @keyframes tanHit{0%,60%{background:rgba(246,217,168,.75);box-shadow:0 0 0 6px rgba(246,217,168,.75)}100%{background:transparent;box-shadow:0 0 0 6px transparent}}
 .tan-hit{animation:tanHit 2.4s ease-out;border-radius:3px}
 .tan-hit:focus{outline:none}
-@media (prefers-reduced-motion:reduce){.tan-idle,.tan-eye,.tan-hit{animation:none}.tan-hit{background:rgba(246,217,168,.75)}.tan-arm{transition:none}}
+@media (prefers-reduced-motion:reduce){.tan-idle,.tan-eye,.tan-hit,.waving .tan-arm-r,.waving svg,.tan-zzz{animation:none}.tan-hit{background:rgba(246,217,168,.75)}.tan-arm{transition:none}}
 
 /* ---------- reduced motion ---------- */
 @media (prefers-reduced-motion:reduce){

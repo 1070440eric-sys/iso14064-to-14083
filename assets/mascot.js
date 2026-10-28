@@ -90,7 +90,7 @@
     if (bubble.hidden) { return; }
     var e = ext(), W = stage.clientWidth, H = stage.clientHeight;
     var bw = bubble.offsetWidth, bh = bubble.offsetHeight;
-    var top = y + e.t - bh - 10;
+    var top = y + e.t - bh - 10 - (el.classList.contains("sleeping") ? size * 0.16 : 0);   // 睡著時讓出 Z 的位置
     if (top < 8) { top = y + e.b + 10; }
     if (top + bh > H - 8) { top = Math.max(8, H - 8 - bh); }
     var left = Math.max(8, Math.min(W - bw - 8, x + size / 2 - bw / 2));
@@ -217,13 +217,14 @@
 
   /* ---------- 說話 ---------- */
   var hideTimer = 0, curSec = "", lineIdx = {}, spoken = {};
-  function say(html) {
+  function say(html, ms) {
     bubbleText.innerHTML = html;
+    bubbleText.removeAttribute("data-idle");
     if (live) { live.textContent = "碳碳：" + bubbleText.textContent; }
     bubble.hidden = false;
     placeBubble();
     clearTimeout(hideTimer);
-    hideTimer = setTimeout(hideBubble, 8000);
+    hideTimer = setTimeout(hideBubble, ms || 8000);
     vsq = 0.16; kick();
   }
   function hideBubble() { clearTimeout(hideTimer); bubble.hidden = true; }
@@ -542,6 +543,78 @@
   document.addEventListener("pointerdown", function (e) {
     if (sPanel.hidden || sPanel.contains(e.target) || (findBtn.contains && findBtn.contains(e.target))) { return; }
     closeSearch(false);
+  });
+
+  /* =========================================================
+     閒置提醒：太久沒動靜，碳碳會揮手叫你；再久一點就睡著
+     - 只算「頁面開著、在前景」的時間；切到別的分頁則改用分頁標題提醒
+     - 收起碳碳、搜尋或術語說明開著時不打擾
+     ========================================================= */
+  var IDLE_CALL = 90 * 1000;      // 90 秒沒動作：揮手叫你
+  var IDLE_SLEEP = 180 * 1000;    // 3 分鐘：睡著，不再吵
+  var lastAct = Date.now(), idleStage = 0, hiddenAt = 0, baseTitle = document.title, titleTimer = 0;
+  var CALL_LINES = [
+    "還在嗎？要不要我幫你<strong>找關鍵字</strong>？",
+    "嘿～還在看嗎？卡住的話，點我一下我幫你帶路。",
+    "這一段比較長，慢慢看沒關係。還在的話跟我揮個手（點我）！"
+  ];
+  function busy() {
+    var dr = document.getElementById("drawer");
+    return root.classList.contains("is-away") || !sPanel.hidden || (dr && !dr.hidden) || held;
+  }
+  function setMood(m) {
+    el.classList.toggle("waving", m === "wave");
+    el.classList.toggle("sleeping", m === "sleep");
+  }
+  function activity() {
+    lastAct = Date.now();
+    if (!idleStage) { return; }
+    var wasSleeping = idleStage === 2;
+    idleStage = 0;
+    setMood("");
+    if (wasSleeping && !busy()) { say("啊，我醒了！我們看到「" + escHtml(SEC_NAME[curSec] || "這裡") + "」。"); }
+    else if (!bubble.hidden && bubbleText.getAttribute("data-idle")) { hideBubble(); }
+  }
+  var moveT = 0;
+  ["scroll", "wheel", "keydown", "pointerdown", "touchstart"].forEach(function (t) {
+    window.addEventListener(t, activity, { passive: true, capture: true });
+  });
+  window.addEventListener("pointermove", function () {   // 滑鼠移動也算，但不用每一下都處理
+    var n = Date.now(); if (n - moveT > 1000) { moveT = n; activity(); }
+  }, { passive: true, capture: true });
+
+  setInterval(function () {
+    if (document.visibilityState === "hidden") { return; }
+    var idle = Date.now() - lastAct;
+    if (busy()) { return; }
+    if (idleStage === 0 && idle >= IDLE_CALL) {
+      idleStage = 1;
+      setMood(reduce() ? "" : "wave");
+      say(CALL_LINES[Math.floor(Math.random() * CALL_LINES.length)], 20000);
+      bubbleText.setAttribute("data-idle", "1");
+      vsq = 0.3; kick();
+    } else if (idleStage === 1 && idle >= IDLE_SLEEP) {
+      idleStage = 2;
+      setMood("sleep");
+      say("沒人理我……我先睡一下。動一下滑鼠或捲一下，我就醒了。", 12000);
+      bubbleText.setAttribute("data-idle", "1");
+    }
+  }, 5000);
+
+  // 切到別的分頁：太久沒回來就在分頁標題上叫你；回來時打聲招呼
+  document.addEventListener("visibilitychange", function () {
+    if (document.visibilityState === "hidden") {
+      hiddenAt = Date.now();
+      clearTimeout(titleTimer);
+      titleTimer = setTimeout(function () { document.title = "（碳碳在等你）" + baseTitle; }, IDLE_CALL);
+    } else {
+      clearTimeout(titleTimer);
+      var away = hiddenAt ? Date.now() - hiddenAt : 0;
+      hiddenAt = 0;
+      if (document.title !== baseTitle) { document.title = baseTitle; }
+      lastAct = Date.now(); idleStage = 0; setMood("");
+      if (away >= IDLE_CALL && !busy()) { say("歡迎回來！我們剛剛看到「" + escHtml(SEC_NAME[curSec] || "這裡") + "」。"); }
+    }
   });
 
   /* ---------- 啟動 ---------- */
