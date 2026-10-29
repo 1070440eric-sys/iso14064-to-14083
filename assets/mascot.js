@@ -107,8 +107,14 @@
       sx.toFixed(3) + "," + sy.toFixed(3) + ") translate(" + (-px).toFixed(1) + "px," + (-py).toFixed(1) + "px)";
     el.classList.toggle("squished", ax > 0.12 || ay > 0.12);
     el.classList.toggle("dizzy", Date.now() < dizzyUntil);
+    /* 影子跟著身體：寬度乘上身體的水平縮放（左右擠扁時變窄、上下壓扁時變寬、變胖時變大），
+       位置對準身體壓扁後的中心與腳底 */
     var s = held ? 0.7 : 1;
-    shadow.style.transform = "translate(" + (x + size / 2 - size * 0.32).toFixed(1) + "px," + (y + e.b - size * 0.04 + (held ? 10 : 0)).toFixed(1) + "px) scale(" + (s * (1 + ay * 0.6)).toFixed(2) + "," + s + ")";
+    var bodyCx = x + px + (size / 2 - px) * sx;
+    var feetY = y + py + (e.b - py) * sy;
+    var shW = shadow.offsetWidth || size * 0.64;
+    shadow.style.transform = "translate(" + (bodyCx - shW / 2).toFixed(1) + "px," + (feetY - size * 0.04 + (held ? 10 : 0)).toFixed(1) + "px) scale(" +
+      Math.max(0.2, s * sx * growScale).toFixed(3) + "," + s + ")";
     shadow.style.opacity = held ? 0.5 : 1;
     if (grow) { grow.setAttribute("transform", "translate(100 176) scale(" + growScale.toFixed(3) + ") translate(-100 -176)"); }
     placeBubble();
