@@ -3,11 +3,14 @@
 <head>
 <meta charset="UTF-8">
 <meta name="viewport" content="width=device-width, initial-scale=1.0">
+<meta name="color-scheme" content="light dark">
 <title>從 ISO 14064 到 ISO 14083｜一趟看得懂的運輸鏈碳排展</title>
 <meta name="description" content="一個給零基礎讀者的互動式科普網站：從企業熟悉的 ISO 14064-1 溫室氣體盤查，一步步理解 ISO 14083 如何量化貨運與客運運輸鏈的排放。">
 <link rel="icon" type="image/svg+xml" href="./assets/img/logo-mark.svg">
-<link rel="stylesheet" href="./assets/styles.css?v=20261029a">
-<script>document.documentElement.className = document.documentElement.className.replace("no-js", "js");</script>
+<link rel="stylesheet" href="./assets/styles.css?v=20261029b">
+<script>document.documentElement.className = document.documentElement.className.replace("no-js", "js");
+/* 使用者手動選過深色／淺色就沿用；沒選過就跟著系統（在 CSS 載入前先設好，避免閃一下白） */
+try { var t = localStorage.getItem("theme"); if (t === "dark" || t === "light") { document.documentElement.setAttribute("data-theme", t); } } catch (e) {}</script>
 </head>
 <body>
 <a class="skip" href="#main">跳到主要內容</a>
@@ -29,6 +32,11 @@
       <a href="#case">案例</a>
       <a href="#refs">參考資料</a>
     </nav>
+    <button type="button" class="theme-btn" id="themeBtn" aria-pressed="false" aria-label="深色模式" title="切換深色／淺色">
+      <svg class="ic-moon" viewBox="0 0 24 24" aria-hidden="true" focusable="false"><path d="M20 14.5A8 8 0 0 1 9.5 4a8 8 0 1 0 10.5 10.5z" fill="currentColor"/></svg>
+      <svg class="ic-sun" viewBox="0 0 24 24" aria-hidden="true" focusable="false"><circle cx="12" cy="12" r="4.2" fill="currentColor"/><g stroke="currentColor" stroke-width="2" stroke-linecap="round"><path d="M12 2.5v2.6M12 18.9v2.6M2.5 12h2.6M18.9 12h2.6M5.3 5.3l1.8 1.8M16.9 16.9l1.8 1.8M5.3 18.7l1.8-1.8M16.9 7.1l1.8-1.8"/></g></svg>
+      <span class="theme-txt">深色</span>
+    </button>
   </div>
   <div class="progress" aria-hidden="true"><span id="progressBar"></span></div>
 </div>
@@ -1549,7 +1557,7 @@
 <p class="sr" id="tanLive" aria-live="polite"></p>
 <button type="button" class="tan-show" id="tanShow" hidden aria-label="叫出導覽吉祥物碳碳">碳碳</button>
 
-<script src="./assets/app.js?v=20261029a"></script>
-<script src="./assets/mascot.js?v=20261029a"></script>
+<script src="./assets/app.js?v=20261029b"></script>
+<script src="./assets/mascot.js?v=20261029b"></script>
 </body>
 </html>

@@ -1836,6 +1836,32 @@
     document.fonts.ready.then(function () { heroLayout(); heroScrub(); });
   }
 
+  /* 深色／淺色切換：沒手動選過就跟系統；按下去之後記住選擇 */
+  (function () {
+    var btn = document.getElementById("themeBtn");
+    if (!btn) { return; }
+    var html = document.documentElement;
+    var sys = window.matchMedia ? window.matchMedia("(prefers-color-scheme: dark)") : null;
+    function isDark() {
+      var t = html.getAttribute("data-theme");
+      return t ? t === "dark" : !!(sys && sys.matches);
+    }
+    function sync() {
+      var d = isDark();
+      btn.setAttribute("aria-pressed", d ? "true" : "false");
+      btn.querySelector(".theme-txt").textContent = d ? "淺色" : "深色";
+      btn.setAttribute("aria-label", d ? "切換成淺色模式" : "切換成深色模式");
+    }
+    btn.addEventListener("click", function () {
+      var next = isDark() ? "light" : "dark";
+      html.setAttribute("data-theme", next);
+      try { localStorage.setItem("theme", next); } catch (e) {}
+      sync();
+    });
+    if (sys && sys.addEventListener) { sys.addEventListener("change", sync); }
+    sync();
+  })();
+
   /* 給吉祥物的搜尋功能用：術語資料、開術語說明、跳到案例的某一步 */
   window.ISO_SITE = {
     gloss: GLOSS,
