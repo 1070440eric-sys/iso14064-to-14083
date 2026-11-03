@@ -7,7 +7,7 @@
 <title>從 ISO 14064 到 ISO 14083｜一趟看得懂的運輸鏈碳排展</title>
 <meta name="description" content="一個給零基礎讀者的互動式科普網站：從企業熟悉的 ISO 14064-1 溫室氣體盤查，一步步理解 ISO 14083 如何量化貨運與客運運輸鏈的排放。">
 <link rel="icon" type="image/svg+xml" href="./assets/img/logo-mark.svg">
-<link rel="stylesheet" href="./assets/styles.css?v=20261029b">
+<link rel="stylesheet" href="./assets/styles.css?v=20261103a">
 <script>document.documentElement.className = document.documentElement.className.replace("no-js", "js");
 /* 使用者手動選過深色／淺色就沿用；沒選過就跟著系統（在 CSS 載入前先設好，避免閃一下白） */
 try { var t = localStorage.getItem("theme"); if (t === "dark" || t === "light") { document.documentElement.setAttribute("data-theme", t); } } catch (e) {}</script>
@@ -899,6 +899,53 @@ try { var t = localStorage.getItem("theme"); if (t === "dark" || t === "light") 
         </p>
 </div>
 </details>
+        <h3 class="sub" id="whoNeeds">誰需要 14083 算出來的數字？</h3>
+        <p>
+          運輸排放多半不是「自己的車」排的，而是別人幫你運貨時排的。所以這個數字會在公司之間傳來傳去：
+          運輸業者算出來、交給貨主；貨主放進自己的盤查報告，再交給投資人、客戶或主管機關。
+          每一手都需要<strong>用同一套方法算、可以互相比較</strong>的數字，這正是 14083 要提供的。
+        </p>
+        <div class="flow" role="group" aria-label="運輸排放數字的流向">
+          <span>運輸業者：依 14083 算出每批貨的排放</span><i aria-hidden="true">→</i>
+          <span class="hot">貨主：放進自己的盤查（14064-1 類別 3）</span><i aria-hidden="true">→</i>
+          <span>投資人、客戶、主管機關：看報告、比較、做決策</span>
+        </div>
+        <ul class="plates who-needs">
+          <li class="plate">
+            <p class="plate-tag">貨主</p>
+            <h3>買運輸服務的公司</h3>
+            <p>製造商、零售商、電商把貨交給物流公司運送。這段排放在 14064-1 屬於<strong>類別 3（運輸造成的間接排放）</strong>，
+              在 GHG Protocol 屬於 Scope 3 的上游／下游運輸。沒有可信的運輸數字，盤查就缺一塊。</p>
+            <p class="plate-eg">例：電子廠要回報「今年委外出貨排了多少」，得向每家物流商要數字，而且要能加總。</p>
+          </li>
+          <li class="plate">
+            <p class="plate-tag">物流與運輸業者</p>
+            <h3>提供運輸的一方</h3>
+            <p>卡車、鐵路、航運、轉運倉儲業者，會被客戶問「這批貨排了多少」。用 14083 這套共同算法，
+              數字才拿得出去、能跟同業比較，也能證明改用電動車或改走鐵路真的有減。</p>
+            <p class="plate-eg">例：物流公司把每張運單的排放附在報表裡，交給貨主。</p>
+          </li>
+          <li class="plate">
+            <p class="plate-tag">投資人與主管機關</p>
+            <h3>看報告、訂規則的人</h3>
+            <p><strong>台灣：</strong>上市櫃公司依金管會規劃，2026 年起分三階段接軌 IFRS 永續揭露準則（資本額百億以上先行，2028 年全面適用），
+              溫室氣體揭露包含範疇三，第一年可延後揭露。</p>
+            <p><strong>歐盟：</strong>大型企業依 CSRD 仍須揭露重大的範疇三排放；2026 年通過的 CountEmissionsEU（Regulation (EU) 2026/1030）
+              以 ISO 14083 為基礎統一運輸排放算法，企業<strong>自願</strong>採用。</p>
+          </li>
+          <li class="plate">
+            <p class="plate-tag">旅客與一般人</p>
+            <h3>坐車、出差的人</h3>
+            <p>14083 不只管貨運，也涵蓋<strong>客運</strong>。公司要算員工出差、通勤的排放，同樣歸在 14064-1 的類別 3；
+              一般人想比較「搭高鐵還是開車」，也需要用同一套方法算出來的數字。</p>
+            <p class="plate-eg">例：公司比較「出差搭高鐵」與「自己開車」的排放差多少。</p>
+          </li>
+        </ul>
+        <p class="caption">
+          法規時程依公開報導整理（金管會 IFRS 永續揭露準則接軌時程、歐盟 CSRD 簡化方案、CountEmissionsEU），整理時間為 2026 年 11 月；
+          實際適用對象與年度，請以主管機關公告為準。本展只說明「為什麼需要這個數字」，不提供法遵建議。
+        </p>
+
         <p class="takeaway"><b>重點</b>14064-1 說「運輸要算」，14083 說「怎麼算」。兩者互補，不是誰取代誰。</p>
       </div>
     </section>
@@ -1460,6 +1507,18 @@ try { var t = localStorage.getItem("theme"); if (t === "dark" || t === "light") 
             <p class="ref-use">用途：作為「如何把委外運輸納入其他間接排放」的<strong>產業實務範例</strong>。它<strong>不是</strong> WRI／WBCSD 的 Scope 3 Standard 本身，本展不把它當作標準條文引用。</p>
           </li>
           <li>
+            <p class="ref-name"><a href="https://www.ezgreen.com.tw/post/%E4%B8%89%E9%9A%8E%E6%AE%B5%E6%8E%A5%E8%BB%8C%E6%B0%B8%E7%BA%8C%E6%8F%AD%E9%9C%B2%E6%BA%96%E5%89%87-2026-%E5%B9%B4-119-%E5%AE%B6%E7%99%BE%E5%84%84%E4%B8%8A%E5%B8%82%E6%AB%83%E5%85%88%E8%A1%8C" target="_blank" rel="noopener noreferrer">三階段接軌永續揭露準則：2026 年 119 家百億上市櫃先行（新聞整理）</a></p>
+            <p class="ref-use">用途：展區 03「誰需要 14083 的數字」中，台灣上市櫃公司接軌 IFRS 永續揭露準則的三階段時程，以及範疇三可延後一年揭露。屬新聞整理，正式內容以金管會公告為準。</p>
+          </li>
+          <li>
+            <p class="ref-name"><a lang="en" href="https://newseuropa.eu/new-eu-rules-harmonising-transport-emissions-calculations-take-effect/" target="_blank" rel="noopener noreferrer">New EU rules harmonising transport emissions calculations take effect（News Europa, 2026-06-01）</a></p>
+            <p class="ref-use">用途：CountEmissionsEU（Regulation (EU) 2026/1030）的正式名稱、生效時間、自願性質，以及與 EN ISO 14083:2023 一致的說明。</p>
+          </li>
+          <li>
+            <p class="ref-name"><a lang="en" href="https://www.anthesisgroup.com/insights/scope-3-reporting-csrd/" target="_blank" rel="noopener noreferrer">CSRD Scope 3 Reporting Requirements: What's Mandatory, What's Changed（Anthesis, 2026）</a></p>
+            <p class="ref-use">用途：歐盟 CSRD 簡化方案（Omnibus I）後，範疇三對適用企業仍屬重大時須揭露的說明。屬顧問機構整理，正式內容以歐盟法規為準。</p>
+          </li>
+          <li>
             <p class="ref-name">本展視覺素材與授權（原創，非外部引用）</p>
             <p class="ref-use">
               網站標誌 <code>assets/img/logo-mark.svg</code>、團隊識別 <code>assets/img/team-black-sofa.svg</code>，
@@ -1557,7 +1616,7 @@ try { var t = localStorage.getItem("theme"); if (t === "dark" || t === "light") 
 <p class="sr" id="tanLive" aria-live="polite"></p>
 <button type="button" class="tan-show" id="tanShow" hidden aria-label="叫出導覽吉祥物碳碳">碳碳</button>
 
-<script src="./assets/app.js?v=20261029b"></script>
-<script src="./assets/mascot.js?v=20261029b"></script>
+<script src="./assets/app.js?v=20261103a"></script>
+<script src="./assets/mascot.js?v=20261103a"></script>
 </body>
 </html>
